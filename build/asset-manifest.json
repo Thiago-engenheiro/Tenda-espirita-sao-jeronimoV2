@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/Thiago-engenheiro/Tenda-espirita-sao-jeronimoV2/static/css/main.874c770d.css",
+    "main.js": "/Thiago-engenheiro/Tenda-espirita-sao-jeronimoV2/static/js/main.fab596b9.js",
+    "static/media/Nasir Udin - RestoraThinItalic.otf": "/Thiago-engenheiro/Tenda-espirita-sao-jeronimoV2/static/media/Nasir Udin - RestoraThinItalic.b932c8b1e84666eb12c7.otf",
+    "static/media/Nasir Udin - RestoraExtraLight.otf": "/Thiago-engenheiro/Tenda-espirita-sao-jeronimoV2/static/media/Nasir Udin - RestoraExtraLight.7249df40adbb5dfadf7f.otf",
+    "static/media/Knile-Regular.otf": "/Thiago-engenheiro/Tenda-espirita-sao-jeronimoV2/static/media/Knile-Regular.a93bc77646fb75add491.otf",
+    "static/media/pomba.png": "/Thiago-engenheiro/Tenda-espirita-sao-jeronimoV2/static/media/pomba.e9b4b2dd9fafed65dcab.png",
+    "index.html": "/Thiago-engenheiro/Tenda-espirita-sao-jeronimoV2/index.html",
+    "main.874c770d.css.map": "/Thiago-engenheiro/Tenda-espirita-sao-jeronimoV2/static/css/main.874c770d.css.map",
+    "main.fab596b9.js.map": "/Thiago-engenheiro/Tenda-espirita-sao-jeronimoV2/static/js/main.fab596b9.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.874c770d.css",
+    "static/js/main.fab596b9.js"
+  ]
+}
