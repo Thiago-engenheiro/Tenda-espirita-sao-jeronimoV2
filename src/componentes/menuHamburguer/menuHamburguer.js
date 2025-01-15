@@ -1,6 +1,7 @@
 import TooltipDeitado from '../links/linksDeitado';
 import './menuHamburguer.css'
 import React, { useState } from 'react';
+import MenuLink from '../linkAtivo/menuLink'
 
 export default function MenuHamburguer () {
 
@@ -41,29 +42,29 @@ export default function MenuHamburguer () {
 
                             <li className='continerLinksLateral'>
 
-                                <a className='NavegacaoLink' href='#home'>
-
-                                    Início
-
-                                </a>
-
-                                <a className='NavegacaoLink' href='#home'>
-
+                                <MenuLink to = "/">
+                               
+                                    Inicio
+                               
+                                </MenuLink>
+                               
+                                <MenuLink to = "/historia">
+                               
                                     Historia
-
-                                </a>
-
-                                <a className='NavegacaoLink' href='#home'>
-
-                                    Missão
-
-                                </a>
-
-                                <a className='NavegacaoLink' href='#home'>
-
+                               
+                                </MenuLink>
+                               
+                                <MenuLink to = "/missao">
+                               
+                                    missão
+                               
+                                </MenuLink>
+                               
+                                <MenuLink to = "/ajuda">
+                               
                                     Ajuda
-
-                                </a>
+                               
+                                </MenuLink>
 
                             </li>
 

@@ -1,5 +1,6 @@
 import MenuHamburguer from '../menuHamburguer/menuHamburguer'
 import './cabecalho.css'
+import MenuLink from '../linkAtivo/menuLink'
 
 export default function Cabecalho () {
     
@@ -25,29 +26,29 @@ export default function Cabecalho () {
 
                         <li className='continerLinks'>
 
-                            <a className='NavegacaoLink' href='#home'>
+                            <MenuLink to = "/">
 
-                                Início
+                                Inicio
 
-                            </a>
+                            </MenuLink>
 
-                            <a className='NavegacaoLink' href='#home'>
+                            <MenuLink to = "/historia">
 
                                 Historia
 
-                            </a>
+                            </MenuLink>
 
-                            <a className='NavegacaoLink' href='#home'>
+                            <MenuLink to = "/missao">
 
-                                Missão
+                                missão
 
-                            </a>
+                            </MenuLink>
 
-                            <a className='NavegacaoLink' href='#home'>
+                            <MenuLink to = "/ajuda">
 
                                 Ajuda
 
-                            </a>
+                            </MenuLink>
 
                         </li>
 

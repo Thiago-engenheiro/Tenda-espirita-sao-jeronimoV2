@@ -1,3 +1,4 @@
+import MenuLink from "../linkAtivo/menuLink";
 import TooltipPe from "../links/LinkRodape";
 import "./Rodape.css";
 
@@ -23,24 +24,16 @@ export default function Rodape() {
             <ul className="todoslinks">
               Links rápidos
               <li>
-                <a className="linkrodape" href="#a">
-                  Início
-                </a>
+                <MenuLink to="/">Inicio</MenuLink>
               </li>
               <li>
-                <a className="linkrodape" href="#a">
-                  Historia
-                </a>
+                <MenuLink to="/historia">Historia</MenuLink>
               </li>
               <li>
-                <a className="linkrodape" href="#a">
-                  Missão
-                </a>
+                <MenuLink to="/missao">missão</MenuLink>
               </li>
               <li>
-                <a className="linkrodape" href="#a">
-                  Contato
-                </a>
+                <MenuLink to="/ajuda">Ajuda</MenuLink>
               </li>
             </ul>
           </nav>

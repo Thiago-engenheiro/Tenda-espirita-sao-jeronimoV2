@@ -1,4 +1,3 @@
-import TooltipDeitado from '../links/linksDeitado';
 import './cardsEvento.css'
 import React, { useState } from "react";
 

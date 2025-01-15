@@ -1,11 +1,13 @@
 import './variaveis.css'
 import './App.css'
 import Cabecalho from './componentes/cabecalho/cabecalho';
-import Swiper from './componentes/swiper/swiper';
-import CardsEvento from './componentes/cardsEvento/cardsEvento';
 import LinkFlutante from './componentes/links/linkFlutante';
 import Rodape from './componentes/Rodape/Rodape';
-import AcaoSocial from './componentes/acaoSocial/acaoSocial';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Inicio from './paginas/inicio/inicio';
+import Historia from './paginas/historia/historia';
+import Missao from './paginas/missao/missao';
+import Ajuda from './paginas/ajuda/ajuda';
 
 
 function App() {
@@ -14,13 +16,32 @@ function App() {
 
     <div className="App">
 
+      <BrowserRouter>
+
       <Cabecalho></Cabecalho>
-      <Swiper></Swiper>
       <LinkFlutante></LinkFlutante>
+  
+        <Routes>
+
+         <Route path="" element={<Inicio></Inicio>}></Route>
+         <Route path="historia" element={<Historia></Historia>}></Route>
+         <Route path="missao" element={<Missao></Missao>}></Route>
+         <Route path="ajuda" element={<Ajuda></Ajuda>}></Route>
+         <Route path="*" element={<div>Pagina Não encontrada</div>}></Route>
+          
+        </Routes>
+
+      <Rodape></Rodape>
+
+      </BrowserRouter>
+
+     
+      {/* <Cabecalho></Cabecalho>
+      <Swiper></Swiper>
       <CardsEvento></CardsEvento>
       <LinkFlutante></LinkFlutante>
       <AcaoSocial></AcaoSocial>
-      <Rodape></Rodape>
+      <Rodape></Rodape> */}
 
     </div>
   );

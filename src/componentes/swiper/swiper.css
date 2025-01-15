@@ -76,4 +76,19 @@
     overflow: hidden !important;
     position: relative !important;
   }
+  
+}
+
+@media (max-width: 700px) {
+ 
+  .tituloSwiper {
+    font-size: 40px;
+ 
+  }
+  
+  .subtituloSwiper {
+    font-size: 30px;
+   
+  }
+  
 }

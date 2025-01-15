@@ -1,0 +1,20 @@
+.navegacaoLink {
+
+    text-decoration: none;
+    color:  #F0F2F4;
+    font-family: var(--fonte-04);
+    font-size: 20px;
+
+}
+
+a:hover {
+
+    color: skyblue;
+   
+}
+
+.aAtivo {
+
+    color: skyblue;
+
+}

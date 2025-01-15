@@ -27,6 +27,7 @@
   color: black;
   font-size: 35px;
   font-family: var(--fonte-01);
+  text-align: center;
 }
 
 .LinhaDecorativa {
@@ -190,6 +191,16 @@
   .acaoSocialConteudo {
     width: 50%;
   }
+
+}
+
+@media (min-width: 1150px) {
+
+  .AcaoSocialSubtitulo {
+
+    text-align: start; 
+  }
+ 
 }
 
 @media (max-width: 1000px) {
