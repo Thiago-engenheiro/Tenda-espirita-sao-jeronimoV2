@@ -1,0 +1,121 @@
+.cabecalho {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(45deg, #89796d, #5e4f3b);
+    color: #F0F2F4;
+    position: fixed;
+    top: 0;
+    width: calc(100% - 40px);
+    padding: 20px;
+    z-index: 10000;
+    
+}
+
+.cabecalhoApresentacao {
+
+    display: flex;
+    align-items: center;
+    gap: 0px;
+
+}
+
+.logotipoImg {
+
+    width: 65px;
+
+}
+
+.LogotipoTitulo {
+
+    font-family: var(--fonte-01);
+    font-size: 13px;
+    font-weight: 800;
+
+}
+
+.navegacaoPaginas {
+
+    display: none;
+    align-items: center;
+    gap: 80px;
+
+} 
+
+.NavegacaoLink {
+
+    text-decoration: none;
+    color:  #F0F2F4;
+    font-family: var(--fonte-04);
+    font-size: 20px;
+
+}
+
+.continerLinks {
+
+    display: flex;
+    align-items: center;
+    gap: 40px;
+
+}
+
+a {
+
+    font-size: 18px;
+
+}
+
+a:hover {
+
+    color: skyblue;
+   
+}
+
+.UsuarioImg {
+
+    width: 65px;
+
+}
+
+@media (min-width: 500px) {
+
+    .logotipoImg {
+
+        width: 80px;
+    
+    }
+
+    .LogotipoTitulo {
+
+        font-size: 20px;
+   
+    }
+
+}
+
+@media (min-width: 750px) {
+
+    .logotipoImg {
+
+        width: 100px;
+    
+    }
+
+    .LogotipoTitulo {
+
+        font-size: 25px;
+   
+    }
+
+}
+
+@media (min-width: 1000px) {
+
+    .navegacaoPaginas {
+
+        display: flex;
+
+    }
+
+}

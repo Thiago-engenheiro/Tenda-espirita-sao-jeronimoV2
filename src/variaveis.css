@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+
+@font-face {
+
+    font-family: 'Restora';
+    src: url('/public/arquivos/fontes/Nasir\ Udin\ -\ RestoraExtraLight.otf') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+
+    font-family: 'Restora2';
+    src:  url('/public/arquivos/fontes/Nasir\ Udin\ -\ RestoraThinItalic.otf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+
+    font-family: 'Knile';
+    src:  url('/public/arquivos/fontes/Knile-Regular.otf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+/* _______________________________________________________________________________________ */
+
+/* Variaveis globais */
+
+:root {
+      
+    --cor-elementos-01: #252627;
+    --cor-elementos-02: #3970BE;
+    --cor-elementos-03: #D3D3D3;
+    --cor-elementos-04: #FFC756;
+
+    --cor-compartilhada-01: white;
+    
+    --fonte-01: "Playfair Display", serif;
+    --fonte-02: "Roboto", sans-serif;
+    --fonte-03: "Outfit", sans-serif;
+
+    --fonte-04: "Restora", sans-serif;
+    --fonte-05: "Restora2", sans-serif;
+    --fonte-06: "Knile", sans-serif;
+
+    --fonte-07: "Inter", serif;
+
+}
+
+
+
+
+
+
+

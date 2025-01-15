@@ -1,0 +1,174 @@
+.RodapePrimario {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(45deg, #89796d, #5e4f3b);
+    text-align: center;
+    font-family: var(--fonte-07);
+    font-size: 22px;
+    gap: 80px;
+    padding: 80px;
+}
+
+.MaisSobre {
+
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+
+}
+
+.todoslinks {
+
+    
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+
+}
+
+.endereço {
+
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+   
+}
+
+.linkrodape {
+
+    color: white;
+    text-decoration: none;
+
+}
+
+.RodapeSecundario {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px;
+    background: linear-gradient(45deg, #5c4f45, #3e2f1b);
+    text-align: center;
+    font-family: var(--fonte-07);
+    font-size: 15px;
+    gap: 40px;
+
+}
+
+
+
+.TextoDireitos {
+
+    width: auto;
+  
+    
+
+}
+
+.LinkThiago {
+
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    margin: 0px 0px 0px 5px;
+    
+}
+
+.LogoThiago {
+
+    width: 15px;
+    margin: 0px 0px 0px 5px;
+}
+
+.aviso {
+
+    width: auto;
+
+}
+
+.vazio {
+
+    width: auto;
+
+}
+
+iframe {
+
+    width: auto;
+    height: auto;
+
+}
+
+@media (min-width: 500px) {
+
+    iframe {
+
+        width: 350px;
+        height: 200px;
+
+    }
+
+}
+  
+@media (min-width: 1000px) {
+
+    .RodapeSecundario {
+
+        display: flex;
+        flex-direction: row;
+    
+    }
+
+    .RodapePrimario {
+
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+        
+    }
+
+    .aviso {
+
+        width: 500px;
+    
+    }
+    
+    .vazio {
+    
+        width: 500px;
+    
+    }
+
+    .TextoDireitos {
+
+        width: 500px;
+    
+    }
+
+    .endereço {
+
+        width: 400px;
+
+       
+    }
+
+    .MaisSobre {
+
+        width: 400px;
+    
+    }
+    
+    
+}
+
+
+
+

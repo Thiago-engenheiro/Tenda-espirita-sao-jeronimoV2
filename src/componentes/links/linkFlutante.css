@@ -1,0 +1,21 @@
+.continerLinkFlutante {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 10001;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.3s ease;
+  display: none;
+}
+
+@media (min-width: 1000px) {
+  .continerLinkFlutante {
+    display: block;
+  }
+}

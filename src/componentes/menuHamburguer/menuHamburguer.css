@@ -1,0 +1,108 @@
+.menuHamburguer {
+
+    background: transparent;
+    border: none;
+    color: #F0F2F4;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.menuHamburguer:hover {
+
+    background: rgba(255, 255, 255, 0.2); 
+    transform: scale(1.1); 
+    
+}
+
+.menuLateral {
+
+    background: #333333;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    padding: 20px;
+    width: 250px;
+    overflow-y: scroll;        
+    scrollbar-width: none;     
+    -ms-overflow-style: none;  
+   
+  
+}
+
+.menuLateral::-webkit-scrollbar {
+    display: none;
+}
+
+.continerLogotipo {
+
+    text-align: center;
+    margin: 30px 0px 50px 0px;
+
+}
+
+.maior {
+
+    width: 100px !important;
+
+}
+
+.fechaMenuHamburguer {
+
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    
+}
+
+.fechaMenuHamburguer:hover {
+
+    background: rgba(255, 255, 255, 0.2); /* Fundo sutil quando passar o mouse */
+    transform: scale(1.1); /* Aumenta um pouco o tamanho do botão */
+    
+}
+
+.continerLinksLateral {
+
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    text-align: center;
+    margin: 0px 0px 60px 0px;
+
+}
+
+@media (min-width: 500px) {
+
+    .menuHamburguer {
+
+        font-size: 40px;
+        
+    } 
+
+}
+
+@media (min-width: 750px) {
+
+    .menuHamburguer {
+
+        font-size: 50px;
+        
+    } 
+
+}
+
+@media (min-width: 1000px) {
+
+    .menuHamburguer {
+
+        display: none;
+        
+    } 
+
+}
