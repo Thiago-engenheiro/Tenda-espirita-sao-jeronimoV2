@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(45deg, #89796d, #5e4f3b);
+    background: linear-gradient(45deg,#278BBC, #0C67AE); 
     text-align: center;
     font-family: var(--fonte-07);
     font-size: 22px;
@@ -55,11 +55,12 @@
     align-items: center;
     justify-content: space-around;
     padding: 10px;
-    background: linear-gradient(45deg, #5c4f45, #3e2f1b);
+    background: linear-gradient(45deg, #278abc1d, #0c68ae45); 
     text-align: center;
     font-family: var(--fonte-07);
     font-size: 15px;
     gap: 40px;
+    color: black;
 
 }
 
@@ -76,16 +77,23 @@
 .LinkThiago {
 
     text-decoration: none;
-    color: white;
     font-size: 15px;
     margin: 0px 0px 0px 5px;
     
 }
 
+.LinkThiago:hover {
+
+   color: #d7420d;
+    
+}
+
+
 .LogoThiago {
 
     width: 15px;
     margin: 0px 0px 0px 5px;
+    filter: invert(1);
 }
 
 .aviso {

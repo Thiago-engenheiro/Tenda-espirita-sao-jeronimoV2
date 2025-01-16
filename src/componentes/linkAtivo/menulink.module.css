@@ -9,12 +9,26 @@
 
 a:hover {
 
-    color: skyblue;
+    transform: scale(1.1); /* Aumenta ligeiramente o texto ao passar o mouse */
+    color: #f5e56b; /* Tom mais claro no hover */
    
 }
 
+.aAtivo::before {
+    content: '➤'; /* Um marcador em forma de seta */
+    margin-right: 8px;
+    color: #e7c909;
+    transition: transform 0.3s ease;
+}
+
+.aAtivo:hover::before {
+    transform: translateX(5px); /* Move a seta ao passar o mouse */
+}
+
+
 .aAtivo {
 
-    color: skyblue;
+    color: #e7c909;
+    transition: transform 0.3s ease, color 0.3s ease;
 
 }

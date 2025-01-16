@@ -82,13 +82,18 @@
 @media (max-width: 700px) {
  
   .tituloSwiper {
-    font-size: 40px;
+    font-size: 20px;
  
   }
   
   .subtituloSwiper {
-    font-size: 30px;
+    font-size: 25px;
    
+  }
+
+  .TextoSwiper {
+    font-size: 25px;
+    font-family: var(--fonte-04);
   }
   
 }
