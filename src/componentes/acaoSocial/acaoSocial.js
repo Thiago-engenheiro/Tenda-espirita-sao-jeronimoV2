@@ -71,7 +71,7 @@ export default function AcaoSocial() {
         
         </div>
 
-        <a className="LerMaisAcaoSocial" href='#home'>Leia mais</a>
+        <a className="LerMaisAcaoSocial" href='/missao'>Leia mais</a>
 
 
 

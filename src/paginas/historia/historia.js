@@ -1,10 +1,13 @@
+import HistoriaDaTenda from "../../componentes/Historia/Historia";
+
 export default function Historia () {
 
     return (
 
         <>
-
-            <div>teste</div>
+        
+            <HistoriaDaTenda></HistoriaDaTenda>
+           
 
         </>
 

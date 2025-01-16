@@ -1,10 +1,12 @@
+
+
 export default function Missao () {
 
     return (
 
         <>
 
-            teste
+            <div>teste</div>
 
         </>
 

@@ -14,7 +14,7 @@ export default function Cabecalho () {
 
                     <img className='logotipoImg' src='/imagens/Exemplos/logo-placeholder-image.png' alt='Logotipo'></img>
 
-                    <h2 className='LogotipoTitulo'>Tenda espirita <br></br> são Jeronimo</h2>
+                    <h1 className='LogotipoTitulo'>Tenda espirita <br></br> são Jeronimo</h1>
 
                 </div>
 
