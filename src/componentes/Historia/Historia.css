@@ -15,7 +15,7 @@
 .TituloHistoria {
 
     color: black;
-    font-size: 40px;
+    font-size: 20px;
     font-family: var(--fonte-04);
 
 }
@@ -23,7 +23,7 @@
 .TextoHistoria {
 
     color: black;
-    font-size: 25px;
+    font-size: 15px;
     font-family: var(--fonte-01);
     
 
@@ -32,7 +32,7 @@
 .TituloGaleria {
 
     color: black;
-    font-size: 40px;
+    font-size: 20px;
     padding: 50px 0px 0px 0px;
     text-align: center;
     font-family: var(--fonte-04);
@@ -44,8 +44,8 @@
     display: flex;
     gap: 40px;
     flex-wrap: wrap;
-    padding: 100px 50px;
-    width: calc(100% 100px);
+    padding: 100px 25px;
+    width: calc(100% - 50px);
     justify-content: center;
     
 
@@ -93,6 +93,7 @@
 .cardAdicionarFotoTexto {
 
     color: black;
+    font-size: 10px;
 
 }
 
@@ -162,8 +163,96 @@
 
    margin: 20px 0px;
   color: gray;
-  font-size: 20px;
+  font-size: 10px;
   font-family: var(--fonte-01);
 
 }
 
+.esconder {
+
+    display: none;
+
+}
+
+.erroTipo1 {
+
+    position: absolute;
+    top: -40px;
+
+}
+
+.erroTipo2 {
+
+    position: absolute;
+    top: -40px;
+
+}
+
+@media (min-width: 450px) {
+
+    .TituloHistoria {
+
+        font-size: 30px;
+
+    }
+
+    .TituloGaleria {
+
+        font-size: 30px;
+        
+    }
+
+    .TextoHistoria {
+
+        font-size: 20px;
+
+    }
+
+    .cardAdicionarFotoTexto {
+
+        font-size: 14px;
+    
+    }
+
+    .TituloImagem {
+
+        font-size: 14px;
+
+    }
+    
+
+}
+
+@media (min-width: 1000px) {
+
+    .TituloHistoria {
+
+        font-size: 40px;
+
+    }
+
+    .TituloGaleria {
+
+        font-size: 40px;
+        
+    }
+
+    .TextoHistoria {
+
+        font-size: 30px;
+
+    }
+
+    .cardAdicionarFotoTexto {
+
+        font-size: 18px;
+    
+    }
+
+    .TituloImagem {
+
+        font-size: 18px;
+
+    }
+
+}
