@@ -33,9 +33,10 @@
 
     color: black;
     font-size: 20px;
-    padding: 50px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
     text-align: center;
     font-family: var(--fonte-04);
+    margin: 0px 0px 50px 0px;
 
 }
 
@@ -73,8 +74,38 @@
     gap: 10px;
     font-family: var(--fonte-01);
     font-size: 20px;
+    cursor: pointer;
+  
 
 }
+
+.VerImagem {
+
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+
+}
+
+.ExcluirImagem {
+
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    padding: 5px 20px;
+    font-size: 14px;
+    gap: 5px;
+    display: none;
+    z-index: 9999;
+    background-color: rgb(255, 95, 95);
+    cursor: pointer;
+}
+
 
 .icone {
 
@@ -125,7 +156,8 @@
     padding: 5px 20px;
     font-size: 14px;
     gap: 5px;
-
+    background-color: rgb(255, 95, 95);
+    cursor: pointer;
 }
 
 .cardAdicionarFotoDados {
@@ -143,7 +175,9 @@
     align-items: center;
     font-size: 14px;
     gap: 5px;
-
+    background-color: #26caf8;
+    cursor: pointer;
+    display: none;
 }
 
 .GaleriaImagemEditar {
@@ -156,6 +190,8 @@
     padding: 5px 20px;
     font-size: 14px;
     gap: 5px;
+    background-color: #90be6d;
+    cursor: pointer;
 
 }
 
@@ -174,17 +210,30 @@
 
 }
 
-.erroTipo1 {
+.erro {
 
     position: absolute;
-    top: -40px;
+    top: -120px;
+    padding: 20px;
+    border-radius: 8px;
+    
+}
 
+.erroTipo1 {
+
+    color: #f2cfcd;
+    background: #7f1c1d;
+    border-left: 8px solid #f2cfcd;
+    right: 50px;
+   
 }
 
 .erroTipo2 {
 
-    position: absolute;
-    top: -40px;
+    color: #f5eeb9;
+    background: #713f11;
+    border-left: 8px solid #f5eeb9;
+    right: 150px;
 
 }
 
@@ -218,6 +267,19 @@
 
         font-size: 14px;
 
+    }
+
+    .erro {
+
+        top: -80px;
+       
+    }
+
+    .TituloGaleria {
+
+        padding: 50px 0px 0px 0px;
+        margin: 0px 0px 0px 0px;
+    
     }
     
 

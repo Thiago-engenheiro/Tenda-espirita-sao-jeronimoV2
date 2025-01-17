@@ -1,5 +1,11 @@
 import { useRef, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
 import "./Historia.css";
+
+const supabase = createClient(
+  process.env.REACT_APP_SUPABASE_URL,
+  process.env.REACT_APP_SUPABASE_ANON_KEY
+);
 
 export default function HistoriaDaTenda() {
   const inputRef = useRef(null);
@@ -39,12 +45,63 @@ export default function HistoriaDaTenda() {
     const arquivo = evento.target.files[0];
     if (arquivo && validarArquivo(arquivo)) {
       console.log("Arquivo válido:", arquivo);
+
+      const urlImagem = URL.createObjectURL(arquivo);
+
+      const imgElement = document.createElement("img");
+      imgElement.src = urlImagem;
+      imgElement.alt = "Imagem Carregada";
+
+      const container = document.getElementById("VerImagem");
+      const BotaoAdicionarImagem = document.getElementById(
+        "BotaoAdicionarImagem"
+      );
+      const ExcluirVisualizacaoImagem = document.getElementById(
+        "ExcluirVisualizacaoImagem"
+      );
+      const botaoEnviarImagem = document.getElementById("botaoEnviarImagem");
+
+      container.innerHTML = "";
+      container.appendChild(imgElement);
+
+      BotaoAdicionarImagem.style.display = "none";
+      container.style.display = "flex";
+      ExcluirVisualizacaoImagem.style.display = "flex";
+      botaoEnviarImagem.style.display = "flex";
     }
+
+    evento.target.value = null;
+
+    return arquivo;
   };
+
+  function ExcluirVisualizacaoImagemFuncao() {
+    const container = document.getElementById("VerImagem");
+    const BotaoAdicionarImagem = document.getElementById(
+      "BotaoAdicionarImagem"
+    );
+    const ExcluirVisualizacaoImagem = document.getElementById(
+      "ExcluirVisualizacaoImagem"
+    );
+    const botaoEnviarImagem = document.getElementById("botaoEnviarImagem");
+
+    container.innerHTML = "";
+
+    BotaoAdicionarImagem.style.display = "flex";
+    container.style.display = "none";
+    ExcluirVisualizacaoImagem.style.display = "none";
+    botaoEnviarImagem.style.display = "none";
+
+    console.log("Imagem apagada:");
+  }
 
   const AssociarBotaoEInput = () => {
     inputRef.current.click();
   };
+
+  async function EnviarArquivoAoServidor(evento) {
+    console.log("teste");
+  }
 
   return (
     <>
@@ -88,8 +145,24 @@ export default function HistoriaDaTenda() {
 
       <section className="galeria">
         <div className="card cardAdicionarFoto">
+          <div className="VerImagem" id="VerImagem"></div>
+
+          <button
+            className="ExcluirImagem"
+            id="ExcluirVisualizacaoImagem"
+            onClick={ExcluirVisualizacaoImagemFuncao}
+          >
+            <img
+              className="iconeMenor"
+              src="/imagens/Icones/Deletar.png"
+              alt="Icone"
+            ></img>
+            Excluir imagem
+          </button>
+
           <button
             className="BotaoAdicionarImagem"
+            id="BotaoAdicionarImagem"
             onClick={AssociarBotaoEInput}
           >
             <img
@@ -108,16 +181,19 @@ export default function HistoriaDaTenda() {
             onChange={arquivoEnviado}
           />
 
-          <div class="space-y-2 p-4">
+          <div className="space-y-2 p-4">
             {erro && tipoErro === 1 && (
-              <div className="erroTipo1">
-                <p>teste</p>
+              <div className=" erro erroTipo1">
+                <p>
+                  Tipo de arquivo não suportado. Apenas PNG, JPG, JPEG e SVG são
+                  aceitos.
+                </p>
               </div>
             )}
 
             {erro && tipoErro === 2 && (
-              <div className="erroTipo2">
-                <p>teste2</p>
+              <div className=" erro erroTipo2">
+                <p>O arquivo excede o tamanho máximo de 5MB.</p>
               </div>
             )}
           </div>
@@ -128,7 +204,11 @@ export default function HistoriaDaTenda() {
               Tamanho máximo: 5MB
             </p>
 
-            <button className="BotaoAdicionarEnviar">
+            <button
+              className="BotaoAdicionarEnviar "
+              id="botaoEnviarImagem"
+              onClick={EnviarArquivoAoServidor}
+            >
               <img
                 className="iconeMenor"
                 src="/imagens/Icones/upload.png"
