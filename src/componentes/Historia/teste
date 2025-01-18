@@ -1,0 +1,19 @@
+ const { data: publicUrlData } = supabase.storage
+      .from("imagens")
+      .getPublicUrl(data.path);
+
+      const publicUrl = publicUrlData.publicUrl;
+      console.log("URL pública da imagem:", publicUrl);
+
+      if (!publicUrl) {
+        console.error("URL pública não encontrada. Verifique as configurações do bucket ou codigo.");
+        return;
+      }
+
+      const {data: insertData,  error: dbError } = await supabase
+      .from("imagens")
+      .insert([
+        {
+          url: publicUrl,
+          titulo: "Sem título", // Você pode personalizar o título ou obter do usuário
+        },
