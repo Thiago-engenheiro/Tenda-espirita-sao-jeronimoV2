@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { useEffect } from "react";
 import "./Historia.css";
 
 const supabase = createClient(
@@ -8,9 +9,92 @@ const supabase = createClient(
 );
 
 export default function HistoriaDaTenda() {
+
   const inputRef = useRef(null);
   const [erro, setErro] = useState("");
   const [tipoErro, setTipoErro] = useState(0);
+
+  useEffect(() => {
+    // Recuperar todas as imagens do banco de dados
+    const fetchImagens = async () => {
+      const { data, error } = await supabase
+        .from("imagens")
+        .select("url, titulo")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Erro ao recuperar imagens do banco de dados:", error.message);
+        return;
+      }
+
+      // Adicionar as imagens à galeria
+      data.forEach((imagem) => {
+        CriarImagemNaGaleria(imagem.url, imagem.titulo);
+      });
+    };
+
+    fetchImagens();
+  }, []);
+
+
+  function CriarImagemNaGaleria (publicUrl, titulo = "Sem título") {
+
+    const galeria = document.getElementById("galeria");
+
+    if (galeria.querySelector(`img[src="${publicUrl}"]`)) {
+      return; // Se já existir, não cria um novo card
+    }
+
+     // Criar o card usando o modelo
+    const card = document.createElement("div");
+    card.className = "card cardFoto";
+
+    // Adicionar a imagem
+    const imagem = document.createElement("img");
+    imagem.className = "GaleriaImagem";
+    imagem.src = publicUrl; // URL dinâmica da imagem
+    imagem.alt = "imagem enviada";
+    card.appendChild(imagem);
+
+    // Botão para excluir a imagem
+    const botaoExcluir = document.createElement("button");
+    botaoExcluir.className = "GaleriaImagemExcluir";
+    botaoExcluir.innerHTML = `
+      <img class="iconeMenor" src="/imagens/Icones/Deletar.png" alt="Ícone">
+      Excluir imagem
+    `;
+    botaoExcluir.addEventListener("click", () => {
+      galeria.removeChild(card);
+      alert("Imagem excluída!"); // Exemplo de ação ao clicar
+    });
+    card.appendChild(botaoExcluir);
+
+    // Adicionar o título da imagem
+    const tituloImagem = document.createElement("h4");
+    tituloImagem.className = "TituloImagem";
+    tituloImagem.textContent = titulo; // Título dinâmico
+    card.appendChild(tituloImagem);
+
+    // Botão para editar o título
+    const botaoEditar = document.createElement("button");
+    botaoEditar.className = "GaleriaImagemEditar";
+    botaoEditar.innerHTML = `
+      <img class="iconeMenor" src="/imagens/Icones/Editar.png" alt="Ícone">
+      Editar texto
+    `;
+    botaoEditar.addEventListener("click", () => {
+      const novoTitulo = prompt("Digite um novo título para a imagem:", titulo);
+      if (novoTitulo) {
+        tituloImagem.textContent = novoTitulo;
+      }
+    });
+    card.appendChild(botaoEditar);
+
+    // Adicionar o card na galeria
+    galeria.appendChild(card);
+    ExcluirVisualizacaoImagemFuncao();
+
+  }
 
   const validarArquivo = (arquivo) => {
     const tiposPermitido = [
@@ -99,9 +183,68 @@ export default function HistoriaDaTenda() {
     inputRef.current.click();
   };
 
-  async function EnviarArquivoAoServidor(evento) {
-    console.log("teste");
-  }
+  async function EnviarArquivoAoServidor() {
+    
+    const container = document.getElementById("VerImagem");
+    const imgElement = container.querySelector("img");
+
+    const arquivoBlob = await fetch(imgElement.src).then((res) => res.blob());
+    const arquivoNome = `imagem_${Date.now()}.png`;
+
+    console.log("Imagem pronta para enviar ao servidor:");
+
+    try {
+      const { data, error } = await supabase.storage
+        .from("imagens") 
+        .upload(arquivoNome, arquivoBlob);
+
+        console.log("Resposta do upload:", data);
+
+      if (error) {
+        console.error("Erro ao enviar o arquivo:", error.message);
+        return;
+      }
+
+      console.log("Arquivo enviado com sucesso:", data);
+
+      const { data: publicUrlData } = supabase.storage
+      .from("imagens")
+      .getPublicUrl(data.path);
+
+      const publicUrl = publicUrlData.publicUrl;
+      console.log("URL pública da imagem:", publicUrl);
+
+      if (!publicUrl) {
+        console.error("URL pública não encontrada. Verifique as configurações do bucket ou codigo.");
+        return;
+      }
+
+      const { error: dbError } = await supabase
+      .from("imagens")
+      .insert([
+        {
+          url: publicUrl,
+          titulo: "Sem título", // Você pode personalizar o título ou obter do usuário
+        },
+      ]);
+
+    if (dbError) {
+      console.error("Erro ao salvar no banco de dados:", dbError.message);
+      return;
+    }
+
+    CriarImagemNaGaleria(publicUrl);
+
+    
+    } catch (error) {
+      console.error("Erro inesperado:", error);
+      alert("Erro ao enviar o arquivo.");
+    }
+
+
+}
+
+
 
   return (
     <>
@@ -143,7 +286,7 @@ export default function HistoriaDaTenda() {
 
       <h3 className="TituloGaleria">Galeria</h3>
 
-      <section className="galeria">
+      <section className="galeria" id="galeria">
         <div className="card cardAdicionarFoto">
           <div className="VerImagem" id="VerImagem"></div>
 
@@ -219,145 +362,6 @@ export default function HistoriaDaTenda() {
           </div>
         </div>
 
-        <div className="card cardFoto">
-          <img
-            className="GaleriaImagem"
-            src="/imagens/Icones/imagem exemplo.png"
-            alt="imagem"
-          ></img>
-
-          <button className="GaleriaImagemExcluir">
-            <img
-              className="iconeMenor"
-              src="/imagens/Icones/Deletar.png"
-              alt="Icone"
-            ></img>
-            Excluir imagem
-          </button>
-
-          <h4 className="TituloImagem">Titulo</h4>
-
-          <button className="GaleriaImagemEditar">
-            <img
-              className="iconeMenor"
-              src="/imagens/Icones/Editar.png"
-              alt="Icone"
-            ></img>
-            Editar texto
-          </button>
-        </div>
-
-        <div className="card cardFoto">
-          <img
-            className="GaleriaImagem"
-            src="/imagens/Icones/imagem exemplo.png"
-            alt="imagem"
-          ></img>
-
-          <button className="GaleriaImagemExcluir">
-            <img
-              className="iconeMenor"
-              src="/imagens/Icones/Deletar.png"
-              alt="Icone"
-            ></img>
-            Excluir imagem
-          </button>
-
-          <h4 className="TituloImagem">Titulo</h4>
-
-          <button className="GaleriaImagemEditar">
-            <img
-              className="iconeMenor"
-              src="/imagens/Icones/Editar.png"
-              alt="Icone"
-            ></img>
-            Editar texto
-          </button>
-        </div>
-
-        <div className="card cardFoto">
-          <img
-            className="GaleriaImagem"
-            src="/imagens/Icones/imagem exemplo.png"
-            alt="imagem"
-          ></img>
-
-          <button className="GaleriaImagemExcluir">
-            <img
-              className="iconeMenor"
-              src="/imagens/Icones/Deletar.png"
-              alt="Icone"
-            ></img>
-            Excluir imagem
-          </button>
-
-          <h4 className="TituloImagem">Titulo</h4>
-
-          <button className="GaleriaImagemEditar">
-            <img
-              className="iconeMenor"
-              src="/imagens/Icones/Editar.png"
-              alt="Icone"
-            ></img>
-            Editar texto
-          </button>
-        </div>
-
-        <div className="card cardFoto">
-          <img
-            className="GaleriaImagem"
-            src="/imagens/Icones/imagem exemplo.png"
-            alt="imagem"
-          ></img>
-
-          <button className="GaleriaImagemExcluir">
-            <img
-              className="iconeMenor"
-              src="/imagens/Icones/Deletar.png"
-              alt="Icone"
-            ></img>
-            Excluir imagem
-          </button>
-
-          <h4 className="TituloImagem">Titulo</h4>
-
-          <button className="GaleriaImagemEditar">
-            <img
-              className="iconeMenor"
-              src="/imagens/Icones/Editar.png"
-              alt="Icone"
-            ></img>
-            Editar texto
-          </button>
-        </div>
-
-        <div className="card cardFoto">
-          <img
-            className="GaleriaImagem"
-            src="/imagens/Icones/imagem exemplo.png"
-            alt="imagem"
-          ></img>
-
-          <button className="GaleriaImagemExcluir">
-            <img
-              className="iconeMenor"
-              src="/imagens/Icones/Deletar.png"
-              alt="Icone"
-            ></img>
-            Excluir imagem
-          </button>
-
-          <h4 className="TituloImagem">Titulo</h4>
-
-          <button className="GaleriaImagemEditar">
-            <img
-              className="iconeMenor"
-              src="/imagens/Icones/Editar.png"
-              alt="Icone"
-            ></img>
-            Editar texto
-          </button>
-        </div>
       </section>
     </>
   );
