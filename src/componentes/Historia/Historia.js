@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useEffect } from "react";
 import "./Historia.css";
+import { useCallback } from "react";
 
 const supabase = createClient(
   process.env.REACT_APP_SUPABASE_URL,
@@ -13,49 +14,27 @@ export default function HistoriaDaTenda() {
   const inputRef = useRef(null);
   const [erro, setErro] = useState("");
   const [tipoErro, setTipoErro] = useState(0);
+  
 
-  useEffect(() => {
-    // Recuperar todas as imagens do banco de dados
-    const fetchImagens = async () => {
-      const { data, error } = await supabase
-        .from("imagens")
-        .select("url, titulo")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Erro ao recuperar imagens do banco de dados:", error.message);
-        return;
-      }
-
-      // Adicionar as imagens à galeria
-      data.forEach((imagem) => {
-        CriarImagemNaGaleria(imagem.url, imagem.titulo);
-      });
-    };
-
-    fetchImagens();
-  }, []);
-
-
-  function CriarImagemNaGaleria (publicUrl, titulo = "Sem título") {
+  const CriarImagemNaGaleria = useCallback((publicUrl, titulo = "Sem título", idImagem) => {
 
     const galeria = document.getElementById("galeria");
-
+  
     if (galeria.querySelector(`img[src="${publicUrl}"]`)) {
       return; // Se já existir, não cria um novo card
     }
-
-     // Criar o card usando o modelo
+  
+    // Criar o card usando o modelo
     const card = document.createElement("div");
     card.className = "card cardFoto";
-
+  
     // Adicionar a imagem
     const imagem = document.createElement("img");
     imagem.className = "GaleriaImagem";
     imagem.src = publicUrl; // URL dinâmica da imagem
     imagem.alt = "imagem enviada";
     card.appendChild(imagem);
-
+  
     // Botão para excluir a imagem
     const botaoExcluir = document.createElement("button");
     botaoExcluir.className = "GaleriaImagemExcluir";
@@ -63,18 +42,34 @@ export default function HistoriaDaTenda() {
       <img class="iconeMenor" src="/imagens/Icones/Deletar.png" alt="Ícone">
       Excluir imagem
     `;
-    botaoExcluir.addEventListener("click", () => {
-      galeria.removeChild(card);
-      alert("Imagem excluída!"); // Exemplo de ação ao clicar
+    botaoExcluir.addEventListener("click", async () => {
+
+      console.log(idImagem)
+      
+      // Excluir a imagem do servidor
+      const { error } = await supabase
+        .from("imagens")
+        .delete()
+        .eq("id", idImagem); // Assumindo que cada imagem tem um ID único no banco
+        console.log(idImagem)
+  
+      if (error) {
+        console.error("Erro ao excluir a imagem no servidor:", error.message);
+        alert("Erro ao excluir a imagem no servidor.");
+      } else {
+        // Se a exclusão no servidor for bem-sucedida, remove da galeria
+        galeria.removeChild(card);
+        alert("Imagem excluída com sucesso!");
+      }
     });
     card.appendChild(botaoExcluir);
-
+  
     // Adicionar o título da imagem
     const tituloImagem = document.createElement("h4");
     tituloImagem.className = "TituloImagem";
     tituloImagem.textContent = titulo; // Título dinâmico
     card.appendChild(tituloImagem);
-
+  
     // Botão para editar o título
     const botaoEditar = document.createElement("button");
     botaoEditar.className = "GaleriaImagemEditar";
@@ -89,12 +84,39 @@ export default function HistoriaDaTenda() {
       }
     });
     card.appendChild(botaoEditar);
-
+  
     // Adicionar o card na galeria
     galeria.appendChild(card);
     ExcluirVisualizacaoImagemFuncao();
+  }, []); // Adicione dependências aqui se necessário);
+  
+  useEffect(() => {
+    // Utilize a função CriarImagemNaGaleria dentro do seu useEffect
+  }, [CriarImagemNaGaleria]); // Agora a função é estável
 
-  }
+  useEffect(() => {
+    const fetchImagens = async () => {
+      const { data, error } = await supabase
+        .from("imagens")
+        .select("id, url, titulo")
+        .order("created_at", { ascending: false });
+  
+      if (error) {
+        console.error("Erro ao recuperar imagens do banco de dados:", error.message);
+        return;
+      }
+
+      // Adicionar as imagens à galeria, incluindo o ID
+      data.forEach((imagem) => {
+        CriarImagemNaGaleria(imagem.url, imagem.titulo, imagem.id);
+      });
+    };
+  
+    fetchImagens();
+  }, [CriarImagemNaGaleria]);
+
+
+  
 
   const validarArquivo = (arquivo) => {
     const tiposPermitido = [
@@ -176,7 +198,6 @@ export default function HistoriaDaTenda() {
     ExcluirVisualizacaoImagem.style.display = "none";
     botaoEnviarImagem.style.display = "none";
 
-    console.log("Imagem apagada:");
   }
 
   const AssociarBotaoEInput = () => {
@@ -191,21 +212,15 @@ export default function HistoriaDaTenda() {
     const arquivoBlob = await fetch(imgElement.src).then((res) => res.blob());
     const arquivoNome = `imagem_${Date.now()}.png`;
 
-    console.log("Imagem pronta para enviar ao servidor:");
-
     try {
       const { data, error } = await supabase.storage
         .from("imagens") 
         .upload(arquivoNome, arquivoBlob);
 
-        console.log("Resposta do upload:", data);
-
       if (error) {
         console.error("Erro ao enviar o arquivo:", error.message);
         return;
       }
-
-      console.log("Arquivo enviado com sucesso:", data);
 
       const { data: publicUrlData } = supabase.storage
       .from("imagens")
@@ -243,8 +258,6 @@ export default function HistoriaDaTenda() {
 
 
 }
-
-
 
   return (
     <>
