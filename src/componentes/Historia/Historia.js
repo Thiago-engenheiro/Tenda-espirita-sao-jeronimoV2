@@ -47,6 +47,40 @@ export default function HistoriaDaTenda() {
       Excluir imagem
     `;
 
+    botaoExcluir.onclick = async  () => {
+
+      try {
+
+        const { error } = await supabase.storage
+        .from("imagens")
+        .remove([nome])
+
+        if (error) {
+          console.error("Erro ao excluir a imagem do banco", error.message);
+          alert("Erro ao excluir a imagem.");
+          return;
+        }
+
+        const { error: dbError } = await supabase
+        .from("imagens")
+        .delete()
+        .eq("nome", nome); 
+
+        if (dbError) {
+          console.error("Erro ao excluir a imagem do banco:", dbError.message);
+          alert("Erro ao excluir a imagem do banco de dados.");
+          return;
+        }
+
+      } catch (err) {
+        console.error("Erro inesperado:", err);
+        alert("Ocorreu um erro inesperado.");
+      }
+
+      buscarCards();
+
+    }
+
     card.appendChild(botaoExcluir);
 
     const tituloImagem = document.createElement("h4");
