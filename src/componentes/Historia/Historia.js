@@ -1,39 +1,99 @@
-import { useRef, useState } from "react";
 import "./Historia.css";
 import { createClient } from "@supabase/supabase-js";
+import { useRef, useState } from "react";
 
 const supabase = createClient(
-
   process.env.REACT_APP_SUPABASE_URL,
   process.env.REACT_APP_SUPABASE_ANON_KEY
-
 );
 
 export default function HistoriaDaTenda() {
-
-  const inputRef = useRef(null)
+  const inputRef = useRef(null);
   const [erro, setErro] = useState("");
   const [tipoErro, setTipoErro] = useState(0);
- 
-  let arquivo = '';
-  let urlImagem = '';
-  let nomeImagem = 'Coloque titulo aqui';
-  let idImagem = '';
+  const [arquivoInfo, setArquivoInfo] = useState({
+    arquivo: null,
+    id: "",
+    nome: "",
+    url: "",
+  });
 
   const AssociarBotaoEInput = () => {
-
     inputRef.current.click();
-
   };
- 
-  const validarArquivo = (arquivo) => {
 
+  async function EnviarArquivoAoServidor() {
+    console.log("foto a ser enviada ao servidor", arquivoInfo);
+
+    const { arquivo, nome } = arquivoInfo;
+
+    const nomeUnico = `${Date.now()}_${nome}`; // Adiciona um timestamp ao nome do arquivo para garantir que seja único
+
+    try {
+      const { data, error } = await supabase.storage
+        .from("imagens")
+        .upload(nomeUnico, arquivo);
+
+      if (error) {
+        throw error;
+      }
+
+      const { publicURL } = supabase.storage
+        .from("imagens")
+        .getPublicUrl(nomeUnico);
+
+      if (!publicURL) {
+        console.error("Erro: A URL pública do arquivo não foi gerada.");
+        return;
+      }
+
+      const fileUrl = publicURL;
+
+      const { error: insertError } = await supabase.from("imagens").insert([
+        {
+          nome: nomeUnico,
+          url: fileUrl,
+        },
+      ]);
+
+      if (insertError) {
+        throw insertError;
+      }
+
+      const { data: selectData, error: selectError } = await supabase
+        .from("imagens")
+        .select("id")
+        .eq("url", fileUrl)
+        .single();
+
+      const idArquivo = selectData.id;
+
+      if (selectError) {
+        throw selectError;
+      }
+
+      console.log("Arquivo enviado com sucesso:", data);
+
+      setArquivoInfo((prevState) => ({
+        ...prevState,
+        nome: nomeUnico,
+        url: fileUrl,
+        id: idArquivo,
+      }));
+
+      console.log("informacoes do arquivo enviado ao servidor", arquivoInfo);
+    } catch (error) {
+      console.error("Erro ao enviar o arquivo:", error.message);
+      return;
+    }
+  }
+
+  const validarArquivo = (arquivo) => {
     const tiposPermitido = [
       "image/png",
       "image/svg",
       "image/jpeg",
       "image/jpg",
-
     ];
 
     const tamanhoMaximo = 5 * 1024 * 1024;
@@ -53,29 +113,28 @@ export default function HistoriaDaTenda() {
     }
 
     return true;
+  };
 
-  }
-  
   const ExibirImagem = async (evento) => {
-
     setErro("");
     setTipoErro(0);
 
-    arquivo = evento.target.files[0];
+    const arquivoSelecionado = evento.target.files[0];
 
-    if (arquivo && validarArquivo(arquivo)) {
-
-      urlImagem = URL.createObjectURL(arquivo); 
+    if (arquivoSelecionado && validarArquivo(arquivoSelecionado)) {
+      const urlImagem = URL.createObjectURL(arquivoSelecionado);
 
       const imgElement = document.createElement("img");
-      imgElement.src = urlImagem; 
+      imgElement.src = urlImagem;
       imgElement.alt = "Imagem Carregada";
 
-      nomeImagem = arquivo.name; 
-
       const container = document.getElementById("VerImagem");
-      const BotaoAdicionarImagem = document.getElementById("BotaoAdicionarImagem");
-      const ExcluirVisualizacaoImagem = document.getElementById("ExcluirVisualizacaoImagem");
+      const BotaoAdicionarImagem = document.getElementById(
+        "BotaoAdicionarImagem"
+      );
+      const ExcluirVisualizacaoImagem = document.getElementById(
+        "ExcluirVisualizacaoImagem"
+      );
       const botaoEnviarImagem = document.getElementById("botaoEnviarImagem");
 
       container.innerHTML = "";
@@ -86,9 +145,14 @@ export default function HistoriaDaTenda() {
       ExcluirVisualizacaoImagem.style.display = "flex";
       botaoEnviarImagem.style.display = "flex";
 
+      if (arquivoSelecionado) {
+        setArquivoInfo({
+          arquivo: arquivoSelecionado,
+          nome: arquivoSelecionado.name, // Obtém o nome do arquivo
+        });
+      }
     }
-
-  }
+  };
 
   function ExcluirVisualizacaoImagemFuncao() {
     const container = document.getElementById("VerImagem");
@@ -106,97 +170,6 @@ export default function HistoriaDaTenda() {
     container.style.display = "none";
     ExcluirVisualizacaoImagem.style.display = "none";
     botaoEnviarImagem.style.display = "none";
-
-  }
-
-  async function EnviarArquivoAoServidor () {
-
-    const CaminhoAondeSeraSalvo = `imagem_${Date.now()}_${nomeImagem}`;
-
-    try {
-
-      const {data,error} = await supabase.storage
-      .from("imagens") 
-      .upload(CaminhoAondeSeraSalvo, arquivo);
-
-      if (error) {
-
-        console.error("Erro ao enviar a imagem:", error.message);
-        return;
-      }
-
-      const { data: publicUrlData } = supabase.storage
-      .from("imagens")
-      .getPublicUrl(data.path);
-
-      urlImagem = publicUrlData.publicUrl;
-
-      const {data: insertData} = await supabase
-      .from("imagens")
-      .insert([
-        {
-          url: urlImagem,
-          titulo: "Sem título", 
-        },
-      ])
-    .select("id");
-
-    idImagem = insertData[0].id;
-
-
-
-    criarCardNaGaleria();
-
-    } catch (error) {
-
-      console.error("Erro inesperado:", error);
-      alert("Erro ao enviar o imagem.");
-      
-    }
-  
-  }
-
-  function criarCardNaGaleria () {
-
-    const galeria = document.getElementById("galeria");
-
-    const card = document.createElement("div");
-    card.className = "card cardFoto";
-
-    const imagem = document.createElement("img");
-    imagem.className = "GaleriaImagem";
-    imagem.src = urlImagem;
-    imagem.alt = "imagem enviada";
-    card.appendChild(imagem);
-
-    const botaoExcluir = document.createElement("button");
-    botaoExcluir.className = "GaleriaImagemExcluir";
-    botaoExcluir.innerHTML = `
-      <img class="iconeMenor" src="/imagens/Icones/Deletar.png" alt="Ícone">
-      Excluir imagem
-    `;
-    card.appendChild(botaoExcluir);
-
-    const MAX_TAMANHO_TITULO = 30;
-
-    const tituloImagem = document.createElement("h4");
-    tituloImagem.className = "TituloImagem";
-    tituloImagem.textContent = nomeImagem; 
-    tituloImagem.textContent = nomeImagem.length > MAX_TAMANHO_TITULO 
-    ? nomeImagem.substring(0, MAX_TAMANHO_TITULO) + "..." 
-    : nomeImagem; 
-    card.appendChild(tituloImagem);
-
-    const botaoEditar = document.createElement("button");
-    botaoEditar.className = "GaleriaImagemEditar";
-    botaoEditar.innerHTML = `
-      <img class="iconeMenor" src="/imagens/Icones/Editar.png" alt="Ícone">
-      Editar texto
-    `;
-    card.appendChild(botaoEditar);
-
-    galeria.appendChild(card);
-
   }
 
   return (
@@ -259,7 +232,7 @@ export default function HistoriaDaTenda() {
           <button
             className="BotaoAdicionarImagem"
             id="BotaoAdicionarImagem"
-           onClick={AssociarBotaoEInput}
+            onClick={AssociarBotaoEInput}
           >
             <img
               className="icone"
@@ -274,7 +247,7 @@ export default function HistoriaDaTenda() {
             ref={inputRef}
             type="file"
             accept="image/png, image/svg, image/jpeg, image/jpg"
-            onChange={ExibirImagem} 
+            onChange={ExibirImagem}
           />
 
           <div className="space-y-2 p-4">
@@ -293,7 +266,7 @@ export default function HistoriaDaTenda() {
               </div>
             )}
           </div>
-          
+
           <div className="cardAdicionarFotoDados">
             <p className="cardAdicionarFotoTexto">
               Tipos aceitos: PNG, SVG, JPEG, JPG <br></br>
@@ -314,7 +287,6 @@ export default function HistoriaDaTenda() {
             </button>
           </div>
         </div>
-
       </section>
     </>
   );
