@@ -1,4 +1,290 @@
- const { data: publicUrlData } = supabase.storage
+const supabase = createClient(
+  process.env.REACT_APP_SUPABASE_URL,
+  process.env.REACT_APP_SUPABASE_ANON_KEY
+);
+
+export default function HistoriaDaTenda() {
+
+  const inputRef = useRef(null);
+  const [erro, setErro] = useState("");
+  const [tipoErro, setTipoErro] = useState(0);
+  
+
+  const CriarImagemNaGaleria = useCallback((publicUrl, titulo = "Sem título", idImagem) => {
+
+    const galeria = document.getElementById("galeria");
+  
+    if (galeria.querySelector(`img[src="${publicUrl}"]`)) {
+      return; // Se já existir, não cria um novo card
+    }
+  
+    // Criar o card usando o modelo
+    const card = document.createElement("div");
+    card.className = "card cardFoto";
+  
+    // Adicionar a imagem
+    const imagem = document.createElement("img");
+    imagem.className = "GaleriaImagem";
+    imagem.src = publicUrl; // URL dinâmica da imagem
+    imagem.alt = "imagem enviada";
+    card.appendChild(imagem);
+  
+    // Botão para excluir a imagem
+    const botaoExcluir = document.createElement("button");
+    botaoExcluir.className = "GaleriaImagemExcluir";
+    botaoExcluir.innerHTML = `
+      <img class="iconeMenor" src="/imagens/Icones/Deletar.png" alt="Ícone">
+      Excluir imagem
+    `;
+    
+    botaoExcluir.addEventListener("click", async () => {
+      console.log("Tentando excluir imagem com ID:", idImagem);
+    
+      // Buscar detalhes da imagem no banco de dados
+      const { data: imagemData, error: fetchError } = await supabase
+        .from("imagens")
+        .select("url")
+        .eq("id", idImagem)
+        .single();
+    
+      if (fetchError) {
+        console.error("Erro ao buscar detalhes da imagem:", fetchError.message);
+        alert("Erro ao buscar informações da imagem no banco de dados.");
+        return;
+      }
+    
+      if (!imagemData || !imagemData.url) {
+        console.error("Imagem não encontrada no banco de dados ou URL ausente.");
+        alert("A imagem não foi encontrada no banco de dados ou está inválida.");
+        return;
+      }
+
+      console.log(publicUrl)
+
+
+    
+      const caminhoRelativo = publicUrl.replace(
+        'https://cmzwzhpjinknqhwlsoag.supabase.co/storage/v1/object/public/', ''
+      );
+
+      const { data: deleteData, error: deleteStorageError } = await supabase.storage
+        .from("imagens") 
+        .remove(['imagens']);
+      
+      if (deleteStorageError) {
+        console.error("Erro ao excluir o arquivo do Storage:", deleteStorageError.message);
+        return;
+      } else {
+        console.log("Arquivo excluído do Storage com sucesso.");
+        const { data: checkData, error: checkError } = await supabase.storage
+          .from("imagens")
+          .getPublicUrl(caminhoRelativo);
+      
+        if (checkError) {
+          console.log("Arquivo não encontrado no Storage, excluído com sucesso.");
+        } else {
+          console.log("Arquivo ainda está no Storage:", checkData.publicUrl);
+        }
+      }
+    
+      // Excluir o registro do banco de dados
+      const { error: dbError } = await supabase
+        .from("imagens")
+        .delete()
+        .eq("id", idImagem);
+    
+      if (dbError) {
+        console.error("Erro ao excluir a imagem no banco de dados:", dbError.message);
+        alert("Erro ao excluir a imagem no banco de dados.");
+        return;
+      }
+    
+      console.log("Registro excluído do banco de dados com sucesso.");
+    
+      // Remover o card da galeria
+      galeria.removeChild(card);
+      alert("Imagem excluída com sucesso!");
+    });
+
+    card.appendChild(botaoExcluir);
+  
+    // Adicionar o título da imagem
+    const tituloImagem = document.createElement("h4");
+    tituloImagem.className = "TituloImagem";
+    tituloImagem.textContent = titulo; // Título dinâmico
+    card.appendChild(tituloImagem);
+  
+    // Botão para editar o título
+    const botaoEditar = document.createElement("button");
+    botaoEditar.className = "GaleriaImagemEditar";
+    botaoEditar.innerHTML = `
+      <img class="iconeMenor" src="/imagens/Icones/Editar.png" alt="Ícone">
+      Editar texto
+    `;
+    botaoEditar.addEventListener("click", () => {
+      const novoTitulo = prompt("Digite um novo título para a imagem:", titulo);
+      if (novoTitulo) {
+        tituloImagem.textContent = novoTitulo;
+      }
+    });
+    card.appendChild(botaoEditar);
+  
+    // Adicionar o card na galeria
+    galeria.appendChild(card);
+    ExcluirVisualizacaoImagemFuncao();
+  }, []); // Adicione dependências aqui se necessário);
+  
+  useEffect(() => {
+    // Utilize a função CriarImagemNaGaleria dentro do seu useEffect
+  }, [CriarImagemNaGaleria]); // Agora a função é estável
+
+  useEffect(() => {
+    const fetchImagens = async () => {
+      const { data, error } = await supabase
+        .from("imagens")
+        .select("id, url, titulo")
+        .order("created_at", { ascending: false });
+  
+      if (error) {
+        console.error("Erro ao recuperar imagens do banco de dados:", error.message);
+        return;
+      }
+
+      // Adicionar as imagens à galeria, incluindo o ID
+      data.forEach((imagem) => {
+        CriarImagemNaGaleria(imagem.url, imagem.titulo, imagem.id);
+      });
+    };
+  
+    fetchImagens();
+  }, [CriarImagemNaGaleria]);
+
+
+  
+
+  const validarArquivo = (arquivo) => {
+    const tiposPermitido = [
+      "image/png",
+      "image/svg",
+      "image/jpeg",
+      "image/jpg",
+    ];
+    const tamanhoMaximo = 5 * 1024 * 1024;
+
+    if (!tiposPermitido.includes(arquivo.type)) {
+      setErro(
+        "Tipo de arquivo não suportado. Apenas PNG, JPG, JPEG e SVG são aceitos."
+      );
+      setTipoErro(1);
+      return false;
+    }
+
+    if (arquivo.size > tamanhoMaximo) {
+      setErro("O arquivo excede o tamanho máximo de 5MB.");
+      setTipoErro(2);
+      return false;
+    }
+
+    return true;
+  };
+
+  const arquivoEnviado = async (evento) => {
+    setErro("");
+    setTipoErro(0);
+  
+    const arquivo = evento.target.files[0];
+    if (arquivo && validarArquivo(arquivo)) {
+      console.log("Arquivo válido:", arquivo);
+  
+      const urlImagem = URL.createObjectURL(arquivo);
+  
+      const imgElement = document.createElement("img");
+      imgElement.src = urlImagem;
+      imgElement.alt = "Imagem Carregada";
+  
+      const container = document.getElementById("VerImagem");
+      const BotaoAdicionarImagem = document.getElementById("BotaoAdicionarImagem");
+      const ExcluirVisualizacaoImagem = document.getElementById("ExcluirVisualizacaoImagem");
+      const botaoEnviarImagem = document.getElementById("botaoEnviarImagem");
+  
+      container.innerHTML = "";
+      container.appendChild(imgElement);
+  
+      BotaoAdicionarImagem.style.display = "none";
+      container.style.display = "flex";
+      ExcluirVisualizacaoImagem.style.display = "flex";
+      botaoEnviarImagem.style.display = "flex";
+  
+      // Enviar o arquivo para o Supabase
+      const { data, error } = await supabase.storage
+        .from("imagens")  // Nome do seu bucket
+        .upload(`imagens/${arquivo.name}`, arquivo);
+  
+      if (error) {
+        console.error("Erro ao enviar o arquivo:", error.message);
+        return;
+      }
+  
+      console.log("Arquivo enviado com sucesso:", data);
+  
+      // Obter URL pública do arquivo enviado
+      const { publicURL, error: urlError } = supabase.storage
+        .from("imagens")
+        .getPublicUrl(`imagens/${arquivo.name}`);
+  
+      if (urlError) {
+        console.error("Erro ao obter a URL pública:", urlError.message);
+      } else {
+        console.log("URL pública do arquivo:", publicURL);
+      }
+    }
+  
+    evento.target.value = null;
+    return arquivo;
+  };
+  
+  function ExcluirVisualizacaoImagemFuncao() {
+    const container = document.getElementById("VerImagem");
+    const BotaoAdicionarImagem = document.getElementById(
+      "BotaoAdicionarImagem"
+    );
+    const ExcluirVisualizacaoImagem = document.getElementById(
+      "ExcluirVisualizacaoImagem"
+    );
+    const botaoEnviarImagem = document.getElementById("botaoEnviarImagem");
+
+    container.innerHTML = "";
+
+    BotaoAdicionarImagem.style.display = "flex";
+    container.style.display = "none";
+    ExcluirVisualizacaoImagem.style.display = "none";
+    botaoEnviarImagem.style.display = "none";
+
+  }
+
+  const AssociarBotaoEInput = () => {
+    inputRef.current.click();
+  };
+
+  async function EnviarArquivoAoServidor() {
+    
+    const container = document.getElementById("VerImagem");
+    const imgElement = container.querySelector("img");
+
+    const arquivoBlob = await fetch(imgElement.src).then((res) => res.blob());
+    const arquivoNome = `imagem_${Date.now()}.png`;
+
+    try {
+      const { data, error } = await supabase.storage
+        .from("imagens") 
+        .upload(arquivoNome, arquivoBlob);
+
+      if (error) {
+        console.error("Erro ao enviar o arquivo:", error.message);
+        return;
+      }
+
+      const { data: publicUrlData } = supabase.storage
       .from("imagens")
       .getPublicUrl(data.path);
 
@@ -17,3 +303,22 @@
           url: publicUrl,
           titulo: "Sem título", // Você pode personalizar o título ou obter do usuário
         },
+      ])
+    .select("id");
+
+    if (dbError) {
+      console.error("Erro ao salvar no banco de dados:", dbError.message);
+      return;
+    }
+
+    const idImagem = insertData[0].id;
+    console.log("ID da imagem recém-inserida:", idImagem);
+
+    CriarImagemNaGaleria(publicUrl, "Sem título", idImagem);
+  } catch (error) {
+    console.error("Erro inesperado:", error);
+    alert("Erro ao enviar o arquivo.");
+  }
+
+
+}

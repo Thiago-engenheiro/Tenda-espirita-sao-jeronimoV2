@@ -237,6 +237,113 @@
 
 }
 
+.campoEditar {
+
+    border: none;
+    outline: none;
+    padding: 12px 15px;
+    background-color: #ccc;
+   box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+   transition: 300ms ease-in-out;
+  bottom: 9px;
+ position: absolute;
+ width: 75px;
+ font-size: 10px;
+
+}
+
+.campoEditar:focus {
+   
+    outline-offset: 5px;
+    outline: 2px solid #FEBF00;
+               
+}
+
+.editBtn {
+
+  width: 34px;
+  height: 34px;
+  border: none;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.123);
+  cursor: pointer;
+  position: absolute;
+  overflow: hidden;
+  transition: all 0.3s;
+  bottom: 10px;
+  right: 10px;
+
+}
+
+.editBtn::before {
+    content: "";
+    width: 200%;
+    height: 200%;
+    background-color: #c9c2c2;
+    position: absolute;
+    z-index: 1;
+    transform: scale(0);
+    transition: all 0.3s;
+    border-radius: 50%;
+    filter: blur(10px);
+  }
+  .editBtn:hover::before {
+    transform: scale(1);
+  }
+  .editBtn:hover {
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.336);
+  }
+  
+  .editBtn svg {
+    height: 15px;
+    fill: black;
+    z-index: 3;
+    transition: all 0.2s;
+    transform-origin: bottom;
+  }
+  .editBtn:hover svg {
+    transform: rotate(-15deg) translateX(5px);
+  }
+  .editBtn::after {
+    content: "";
+    width: 25px;
+    height: 1.5px;
+    position: absolute;
+    bottom: 10px;
+    left: -90px;
+    background-color: black;
+    border-radius: 2px;
+    z-index: 2;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease-out;
+  }
+  .editBtn:hover::after {
+    transform: scaleX(1);
+    left: 0px;
+    transform-origin: right;
+  }
+  
+
+.campoEditar:focus {
+
+    outline-offset: 5px;
+    background-color: #fff
+
+}
+
+@media (min-width: 400px) {
+
+    .editBtn {
+
+        bottom: 10px;
+    }
+
+}
+
 @media (min-width: 450px) {
 
     .TituloHistoria {
@@ -285,6 +392,17 @@
 
 }
 
+@media (min-width: 600px) {
+
+    .campoEditar {
+
+        width: 200px;
+    
+    }
+
+}
+
+
 @media (min-width: 1000px) {
 
     .TituloHistoria {
@@ -315,6 +433,13 @@
 
         font-size: 18px;
 
+    }
+
+    .campoEditar {
+
+        font-size: 18px;
+        padding: 7px 15px;
+    
     }
 
 }
