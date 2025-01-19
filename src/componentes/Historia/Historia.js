@@ -85,7 +85,8 @@ export default function HistoriaDaTenda() {
 
     const tituloImagem = document.createElement("h4");
     tituloImagem.className = "TituloImagem";
-    tituloImagem.textContent = imagem.nome;
+    const nomeLimitado = imagem.nome.length > 20 ? imagem.nome.slice(0, 20) + '...' : imagem.nome;
+    tituloImagem.textContent = nomeLimitado;
     card.appendChild(tituloImagem);
 
     const botaoEditar = document.createElement("button");
@@ -99,7 +100,7 @@ export default function HistoriaDaTenda() {
 
     const campoEditarNome = document.createElement("input");
     campoEditarNome.type = "text";
-    campoEditarNome.value = imagem.nome;
+    campoEditarNome.value = nomeLimitado;
     campoEditarNome.style.display = "none";
     campoEditarNome.className = "campoEditar";
 
