@@ -1,5 +1,5 @@
 import "./formluario.card.css";
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -9,14 +9,6 @@ const supabase = createClient(
 
 export default function FormularioCards() {
   const [value, setValue] = useState("");
-  const [cardInfo, setcardInfo] = useState({
-    id: "",
-    nome: "",
-    tipo: "",
-    data: "",
-    hora: "",
-    texto: "",
-  });
 
   const handleInputChange = (event) => {
     setValue(event.target.value);
@@ -24,26 +16,92 @@ export default function FormularioCards() {
     event.target.style.height = `${event.target.scrollHeight}px`;
   };
 
-  async function criarCardsEventos() {
-    const { id, nome, tipo, data, hora, texto } = setcardInfo;
+  const buscarCardsEventos = useCallback(async () => {
+    try {
+      const { data, error } = await supabase.from("eventos").select("*");
 
+      if (error) {
+        console.error("Erro ao buscar os dados na tabela:", error.message);
+        return;
+      }
+
+      const cards = document.getElementById("continerCards");
+
+      const continerCards = cards.querySelectorAll(".continerCard");
+
+      continerCards.forEach((continerCard) => {
+        continerCard.remove();
+      });
+
+      data.forEach((item) => {
+        criarCardsEventos(
+          item.id,
+          item.nome_evento,
+          item.tipo_evento,
+          item.data_evento,
+          item.horario_evento,
+          item.descricao_evento
+        );
+      });
+    } catch (error) {
+      console.error("Erro ao buscar e renderizar os eventos:", error);
+    }
+  }, [criarCardsEventos]);
+
+  async function criarCardsEventos(
+    id,
+    nomeEvento,
+    tipoEvento,
+    dataEvento,
+    horarioEvento,
+    descricaoEvento
+  ) {
     const cards = document.getElementById("continerCards");
 
     const continerCard = document.createElement("div");
     continerCard.className = "continerCard";
+    continerCard.style.height = "150px";
+    continerCard.style.transition = "all 0.3s ease";
 
-    const { data: selectData, error: selectError } = await supabase
-      .from("eventos")
-      .select("id")
-      .eq("nome", nome)
-      .single();
+    continerCard.innerHTML = `
+    <div class="CardHorarioLocal">
+      <div></div>
+      <img class="iconeLocalizacao" src="/imagens/Icones/logalização.png" alt="Ícone">
+      <p class="DataTexto">${formatarData(dataEvento)}</p>
+      <div class="continerHorario">
+        <p>${formatarHora(horarioEvento)}</p>
+        <img class="iconeHorario" src="${definirIconeHorario(
+          horarioEvento
+        )}" alt="Ícone">
+      </div>
+    </div>
+    <div class="informacoesEvento">
+      <h3>Evento: ${nomeEvento}</h3>
+        <p>${descricaoEvento}</p>
+    </div>
+  `;
 
-    if (selectError) {
-      console.error("Erro ao buscar o id do arquivo:", selectError);
-      return;
-    }
+    cards.appendChild(continerCard);
+  }
 
-    const idArquivo = selectData.id;
+  function formatarData(data) {
+    const options = { day: "2-digit", month: "short" };
+    return new Date(data).toLocaleDateString("pt-BR", options).toUpperCase();
+  }
+
+  function definirIconeHorario(horario) {
+    const [hora] = horario.split(":").map(Number);
+    console.log("Hora sem formatar", hora);
+    formatarHora(hora);
+    console.log("Hora apos formatar", hora);
+    return hora < 18
+      ? "/imagens/Icones/brilho-do-sol.png"
+      : "/imagens/Icones/lua.png";
+  }
+
+  function formatarHora(horario) {
+    const horarioString = String(horario);
+    return horarioString.slice(0, 5);
   }
 
   async function enviarAoServidor(evento) {
@@ -72,15 +130,13 @@ export default function FormularioCards() {
     }
 
     try {
-      const { error: dbError } = await supabase
-        .from("eventos")
-        .insert({
-          nome_evento: nomeEvento,
-          tipo_evento: tipoEvento,
-          data_evento: dataEvento,
-          horario_evento: horarioEvento,
-          descricao_evento: textoEvento,
-        });
+      const { error: dbError } = await supabase.from("eventos").insert({
+        nome_evento: nomeEvento,
+        tipo_evento: tipoEvento,
+        data_evento: dataEvento,
+        horario_evento: horarioEvento,
+        descricao_evento: textoEvento,
+      });
 
       if (dbError) {
         console.error(
@@ -91,34 +147,28 @@ export default function FormularioCards() {
         return;
       }
 
-      const { data: selectData, error: selectError } = await supabase
+      const { error: selectError } = await supabase
         .from("eventos")
         .select("id")
-        .eq("nome", nomeEvento)
+        .eq("nome_evento", nomeEvento)
         .single();
 
       if (selectError) {
         console.error("Erro ao buscar o id do arquivo:", selectError);
         return;
       }
-
-      const idCard = selectData.id;
-
-      setcardInfo({
-        id: idCard,
-        nome: nomeEvento,
-        tipo: tipoEvento,
-        data: dataEvento,
-        hora: horarioEvento,
-        texto: textoEvento,
-      });
     } catch (err) {
       console.error("Erro inesperado:", err);
       alert("Ocorreu um erro inesperado.");
     }
 
     document.querySelector(".continerFormularioCards").reset();
+    buscarCardsEventos();
   }
+
+  useEffect(() => {
+    buscarCardsEventos();
+  }, [buscarCardsEventos]);
 
   return (
     <>
