@@ -186,8 +186,11 @@ export default function HistoriaDaTenda() {
       buscarCards();
     };
 
+    
+
     galeria.appendChild(card);
     ExcluirVisualizacaoImagemFuncao();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const buscarCards = useCallback(async () => {

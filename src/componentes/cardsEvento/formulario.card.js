@@ -48,6 +48,7 @@ export default function FormularioCards() {
     }
   }, [criarCardsEventos]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   async function criarCardsEventos(
     id,
     nomeEvento,
@@ -63,6 +64,48 @@ export default function FormularioCards() {
     continerCard.style.height = "150px";
     continerCard.style.transition = "all 0.3s ease";
 
+    const botaoExcluirEvento = document.createElement("button");
+    botaoExcluirEvento.className = "botaoExcluirEvento";
+    botaoExcluirEvento.innerHTML = `
+      <img class="iconeMenor" src="/imagens/Icones/Deletar.png" alt="Ícone">
+    `;
+
+    const botaoEditarEvento = document.createElement("button");
+    botaoEditarEvento.className = "botaoEditarEvento";
+    botaoEditarEvento.innerHTML = `
+      <img class="iconeMenor" src="/imagens/Icones/Editar.png" alt="Ícone">
+    `;
+
+    botaoExcluirEvento.onclick = async () => {
+      try {
+        const { error: dbError } = await supabase
+          .from("eventos")
+          .delete()
+          .eq("nome_evento", nomeEvento);
+
+        if (dbError) {
+          console.error("Erro ao excluir o evento:", dbError.message);
+          alert("Erro ao evento do banco de dados.");
+          return;
+        }
+      } catch (err) {
+        console.error("Erro inesperado:", err);
+        alert("Ocorreu um erro inesperado.");
+      }
+
+      buscarCardsEventos();
+    };
+
+    botaoEditarEvento.onclick = async () => {
+      try {
+      } catch (err) {
+        console.error("Erro inesperado:", err);
+        alert("Ocorreu um erro inesperado.");
+      }
+
+      buscarCardsEventos();
+    };
+
     continerCard.innerHTML = `
     <div class="CardHorarioLocal">
       <div></div>
@@ -76,11 +119,12 @@ export default function FormularioCards() {
       </div>
     </div>
     <div class="informacoesEvento">
-      <h3>Evento: ${nomeEvento}</h3>
-        <p>${descricaoEvento}</p>
+      <h3>${tipoEvento}: ${nomeEvento}</h3>
+        <p class="informacoesEventoTexto"> ${descricaoEvento}</p>
     </div>
   `;
 
+    continerCard.appendChild(botaoExcluirEvento);
     cards.appendChild(continerCard);
   }
 
@@ -115,18 +159,16 @@ export default function FormularioCards() {
     const horarioEvento = document.getElementById("hora").value;
     const textoEvento = document.getElementById("comentario").value;
 
-    const tiposDeEvento = ["Reunião", "Comemoração", "Evento"];
+    const tiposDeEvento = {
+      opcao1: "Reunião",
+      opcao2: "Comemoração",
+      opcao3: "Evento",
+    };
 
-    if (tipoEvento === "opcao1") {
-      tipoEvento = tiposDeEvento[0];
-    }
-
-    if (tipoEvento === "opcao2") {
-      tipoEvento = tiposDeEvento[1];
-    }
-
-    if (tipoEvento === "opcaofinal") {
-      tipoEvento = tiposDeEvento[2];
+    if (tipoEvento in tiposDeEvento) {
+      tipoEvento = tiposDeEvento[tipoEvento];
+    } else {
+      tipoEvento = "Desconhecido";
     }
 
     try {
@@ -206,7 +248,7 @@ export default function FormularioCards() {
           >
             <option value="opcao1">Reunião</option>
             <option value="opcao2">Comemoração</option>
-            <option value="opcaoFinal">Evento</option>
+            <option value="opcao3">Evento</option>
           </select>
 
           <h5 className="TituloInput">Data do vento</h5>
