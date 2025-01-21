@@ -30,7 +30,7 @@ export default function Rodape() {
                 <MenuLink to="/historia">Historia</MenuLink>
               </li>
               <li>
-                <MenuLink to="/missao">missão</MenuLink>
+                <MenuLink to="/missao">Missão</MenuLink>
               </li>
               <li>
                 <MenuLink to="/ajuda">Ajuda</MenuLink>

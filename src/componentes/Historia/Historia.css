@@ -75,6 +75,7 @@
     font-family: var(--fonte-01);
     font-size: 20px;
     cursor: pointer;
+    
   
 
 }
@@ -104,6 +105,12 @@
     z-index: 9999;
     background-color: rgb(255, 95, 95);
     cursor: pointer;
+}
+
+.ExcluirImagem:hover {
+
+    background-color: rgb(248, 67, 67);
+   
 }
 
 
@@ -160,6 +167,12 @@
     cursor: pointer;
 }
 
+.GaleriaImagemExcluir:hover {
+
+    background-color: rgb(248, 67, 67);
+    
+}
+
 .cardAdicionarFotoDados {
 
     display: flex;
@@ -180,6 +193,12 @@
     display: none;
 }
 
+.BotaoAdicionarEnviar:hover {
+
+    background-color: #0db7e6;
+    
+}
+
 .GaleriaImagemEditar {
 
     position: absolute;
@@ -192,6 +211,12 @@
     gap: 5px;
     background-color: #90be6d;
     cursor: pointer;
+
+}
+
+.GaleriaImagemEditar:hover {
+
+    background-color: #6bb335;
 
 }
 

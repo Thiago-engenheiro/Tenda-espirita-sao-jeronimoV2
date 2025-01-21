@@ -1,5 +1,6 @@
 import './cardsEvento.css'
 import React, { useState } from "react";
+import FormularioCards from './formulario.card';
 
 
 export default function CardsEvento () {
@@ -19,9 +20,9 @@ export default function CardsEvento () {
         
             <section className='cardsEvento'>
 
-            <div></div>
+                <FormularioCards></FormularioCards>
 
-                <div className='cards'>
+                <div className='cards' id='continerCards'>
 
                     <div
                         className={`continerCard ${openCards[1] ? "expandido" : ""}`}

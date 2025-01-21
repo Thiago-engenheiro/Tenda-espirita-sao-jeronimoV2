@@ -40,7 +40,7 @@ export default function Cabecalho () {
 
                             <MenuLink to = "/missao">
 
-                                missão
+                                Missão
 
                             </MenuLink>
 
