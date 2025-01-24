@@ -6,8 +6,7 @@ import Rodape from './componentes/Rodape/Rodape';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Inicio from './paginas/inicio/inicio';
 import Historia from './paginas/historia/historia';
-import Missao from './paginas/missao/missao';
-import Ajuda from './paginas/ajuda/ajuda';
+import Agenda from './paginas/agenda/agenda';
 
 
 function App() {
@@ -25,8 +24,7 @@ function App() {
 
          <Route path="" element={<Inicio></Inicio>}></Route>
          <Route path="historia" element={<Historia></Historia>}></Route>
-         <Route path="missao" element={<Missao></Missao>}></Route>
-         <Route path="ajuda" element={<Ajuda></Ajuda>}></Route>
+         <Route path="Agenda" element={<Agenda></Agenda>}></Route>
          <Route path="*" element={<div>Pagina Não encontrada</div>}></Route>
           
         </Routes>

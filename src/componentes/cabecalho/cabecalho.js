@@ -38,15 +38,9 @@ export default function Cabecalho () {
 
                             </MenuLink>
 
-                            <MenuLink to = "/missao">
+                            <MenuLink to = "/agenda">
 
-                                Missão
-
-                            </MenuLink>
-
-                            <MenuLink to = "/ajuda">
-
-                                Ajuda
+                                Agenda
 
                             </MenuLink>
 

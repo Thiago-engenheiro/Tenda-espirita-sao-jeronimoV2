@@ -54,15 +54,9 @@ export default function MenuHamburguer () {
                                
                                 </MenuLink>
                                
-                                <MenuLink to = "/missao">
+                                <MenuLink to = "/agenda">
                                
-                                    Missão
-                               
-                                </MenuLink>
-                               
-                                <MenuLink to = "/ajuda">
-                               
-                                    Ajuda
+                                    Agenda
                                
                                 </MenuLink>
 

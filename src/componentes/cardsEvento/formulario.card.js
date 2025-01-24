@@ -1,5 +1,5 @@
 import "./formluario.card.css";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -9,6 +9,16 @@ const supabase = createClient(
 
 export default function FormularioCards() {
   const [value, setValue] = useState("");
+
+  const dialogRef = useRef(null);
+
+  const abrirDialogo = () => {
+    dialogRef.current?.showModal();
+  };
+
+  const fecharDialogo = () => {
+    dialogRef.current?.close();
+  };
 
   const handleInputChange = (event) => {
     setValue(event.target.value);
@@ -33,17 +43,14 @@ export default function FormularioCards() {
 
       continerCards1.forEach((continerCards1) => {
         continerCards1.remove();
-       
       });
 
       continerCards2.forEach((continerCards2) => {
         continerCards2.remove();
-       
       });
 
       continerCards3.forEach((continerCards3) => {
         continerCards3.remove();
-       
       });
 
       data.forEach((item) => {
@@ -75,23 +82,13 @@ export default function FormularioCards() {
     continerCard.style.height = "150px";
     continerCard.style.transition = "all 0.3s ease";
 
-   
     if (tipoEvento === "Reunião") {
-
       continerCard.className = "continerCardImagem1";
-    
-
     } else if (tipoEvento === "Comemoração") {
-     
       continerCard.className = "continerCardImagem2";
-
-
     } else if (tipoEvento === "Evento") {
-
       continerCard.className = "continerCardImagem3";
-
-    } 
-    
+    }
 
     const botaoExcluirEvento = document.createElement("button");
     botaoExcluirEvento.className = "botaoExcluirEvento";
@@ -189,11 +186,14 @@ export default function FormularioCards() {
     const textoEvento = document.getElementById("comentario").value;
 
     const { data: existingNome, error: existingError } = await supabase
-    .from("eventos")
-    .select("nome_evento")
+      .from("eventos")
+      .select("nome_evento");
 
     if (existingError) {
-      console.error("Erro ao verificar se nome ja existe no banco", existingError);
+      console.error(
+        "Erro ao verificar se nome ja existe no banco",
+        existingError
+      );
       return;
     }
 
@@ -201,10 +201,8 @@ export default function FormularioCards() {
     const existeNome = nomesLista.includes(nomeEvento);
 
     if (existeNome) {
-
-      alert ("Nome do evento ja existe, por favor escolha outro nome");
+      alert("Nome do evento ja existe, por favor escolha outro nome");
       return;
-
     }
 
     const tiposDeEvento = {
@@ -264,7 +262,7 @@ export default function FormularioCards() {
     <>
       <form className="continerFormularioCards" onSubmit={enviarAoServidor}>
         <div className="ContinerFormularioTitulo">
-          <h4 className="FormularioTitulo">Adicionar eventos futuros</h4>
+          <h4 className="FormularioTitulo">Adicionar eventos</h4>
           <img
             className="iconeMaior"
             src="/imagens/Icones/evento.png"
@@ -272,15 +270,70 @@ export default function FormularioCards() {
           ></img>
         </div>
 
+        <dialog
+          id="duvidasEvento"
+          ref={dialogRef}
+          className="caixaDuvidasEvento"
+        >
+          <h5 className="duvidasEventoTitulo">Ajuda com eventos</h5>
+          <br></br>
+          <br></br>
+          <br></br>
+
+          <h6 className="duvidasEventoSubtitulo">Salvar evento</h6>
+
+          <p className="duvidasEventoTexto">
+            Nesta seção, você pode adicionar eventos, tanto futuros quanto
+            passados que não foram registrados. Para adicionar um evento, basta
+            preencher os campos do formulário e clicar em "Salvar evento".
+            <br></br>
+            <br></br>
+            <br></br>- O nome do evento tem um limite de 40 caracteres, não pode
+            ser vazio nem repetido. (obrigatório)
+            <br></br>- O tipo do evento deve ser selecionado entre as opções
+            disponíveis: Reunião, Comemoração ou Evento, sendo Evento a opção
+            genérica caso não encontre nenhuma que se encaixa. ( apesar de ser
+            obrigatório ele escolhe a opção 3 por padrão)
+            <br></br>- A data do evento pode ser escrita ou selecionada ao
+            clicar no ícone do calendário. (obrigatório) (apenas números)
+            <br></br>- O horário do evento pode ser escrito ou selecionado ao
+            clicar no ícone do relógio. (obrigatório) (apenas números)
+            <br></br>- As informações sobre o evento podem ser adicionadas no
+            campo de texto, com um limite de 200 caracteres. (opcional)
+          </p>
+
+          <br></br>
+          <br></br>
+          <br></br>
+          <h6 className="duvidasEventoSubtitulo">Limpar Formulario</h6>
+
+          <p className="duvidasEventoTexto">
+            No botão de limpar formulario ao clicar todos os dados no formulario
+            serão apagados
+          </p>
+
+          <button
+            type="button"
+            onClick={fecharDialogo}
+            id="fecharduvidasEvento"
+          >
+            X
+          </button>
+        </dialog>
+        <button type="button" onClick={abrirDialogo} id="abrirduvidasEvento">
+          ?
+        </button>
+
         <div className="LinhaDecorativa2"></div>
 
         <div className="continerInputsFormulario">
-          <h5 className="TituloInput"> Nome do evento</h5>
+          <h5 className="TituloInput"> Nome do evento*</h5>
 
           <input
             id="tituloCard"
             className="formularioInputEstilo"
             type="text"
+            maxLength="40"
             required
             placeholder="Exemplo: festa do final do ano"
           ></input>
@@ -291,7 +344,7 @@ export default function FormularioCards() {
             className="formularioInputEstilo"
             id="opcoesEvento"
             name="opcoesEvento"
-            defaultValue={"opcaoFinal"}
+            defaultValue={"opcao3"}
             required
           >
             <option value="opcao1">Reunião</option>
@@ -299,7 +352,7 @@ export default function FormularioCards() {
             <option value="opcao3">Evento</option>
           </select>
 
-          <h5 className="TituloInput">Data do vento</h5>
+          <h5 className="TituloInput">Data do vento*</h5>
           <input
             className="formularioInputEstilo"
             type="date"
@@ -308,7 +361,7 @@ export default function FormularioCards() {
             required
           ></input>
 
-          <h5 className="TituloInput">Horario</h5>
+          <h5 className="TituloInput">Horario*</h5>
           <input
             className="formularioInputEstilo"
             type="time"
@@ -325,10 +378,12 @@ export default function FormularioCards() {
             value={value}
             onChange={handleInputChange}
             rows="4"
-             maxLength="200"
+            maxLength="200"
             style={{ resize: "none", overflow: "hidden" }}
           />
-          <p className="textoCaracteres">{value.length}/200 caracteres usados</p>
+          <p className="textoCaracteres">
+            {value.length}/200 caracteres usados
+          </p>
         </div>
 
         <div className="continerBotoesFormularios">
