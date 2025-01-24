@@ -4,9 +4,8 @@
     inset 2px 2px 4px rgba(0, 0, 0, 0.356);
     background: #FFFFFF;
     border-radius: 16px;
-    max-width: calc(600px);
     height: auto;
-    width: 100%;
+    width: 70%;
     padding: 40px;
     display: flex;
     flex-direction: column;
@@ -30,10 +29,9 @@
 
 .FormularioTitulo {
 
-    font-size: 30px;
+    font-size: 15px;
     font-family: var(--fonte-01);
    
-
 }
 
 .LinhaDecorativa2 {
@@ -56,7 +54,9 @@
 .continerBotoesFormularios {
 
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
 
 }
 
@@ -97,6 +97,10 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    cursor: pointer;
+    width: 200px;
+    justify-content: center;
+ 
 
 }
 
@@ -114,6 +118,9 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    cursor: pointer;
+    width: 200px;
+    justify-content: center;
 
 }
 
@@ -136,6 +143,7 @@
     top: 10px;
     right: 10px;
     background-color: rgb(255, 95, 95);
+    cursor: pointer;
 
 }
 
@@ -152,6 +160,13 @@
     top: 50px;
     right: 10px;
     background-color: #90be6d;
+    cursor: pointer;
+
+}
+
+.textoCaracteres {
+
+    margin: -10px 0px 0px 0px;
 
 }
 
@@ -161,3 +176,45 @@
     
 }
 
+@media (min-width: 470px) {
+
+    .continerFormularioCards {
+
+        max-width: 80%;
+        
+    }
+
+    .FormularioTitulo {
+
+        font-size: 20px;
+       
+    }
+    
+
+}
+
+@media (min-width: 750px) {
+
+    .continerFormularioCards {
+
+        max-width: calc(600px);
+         
+    }
+
+    .FormularioTitulo {
+
+        font-size: 25px;
+       
+    }
+
+    .continerBotoesFormularios {
+
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 0px;
+        align-items: center;
+    
+    }
+    
+
+}

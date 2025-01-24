@@ -27,10 +27,23 @@ export default function FormularioCards() {
 
       const cards = document.getElementById("continerCards");
 
-      const continerCards = cards.querySelectorAll(".continerCard");
+      const continerCards1 = cards.querySelectorAll(".continerCardImagem1");
+      const continerCards2 = cards.querySelectorAll(".continerCardImagem2");
+      const continerCards3 = cards.querySelectorAll(".continerCardImagem3");
 
-      continerCards.forEach((continerCard) => {
-        continerCard.remove();
+      continerCards1.forEach((continerCards1) => {
+        continerCards1.remove();
+       
+      });
+
+      continerCards2.forEach((continerCards2) => {
+        continerCards2.remove();
+       
+      });
+
+      continerCards3.forEach((continerCards3) => {
+        continerCards3.remove();
+       
       });
 
       data.forEach((item) => {
@@ -58,11 +71,27 @@ export default function FormularioCards() {
     descricaoEvento
   ) {
     const cards = document.getElementById("continerCards");
-
     const continerCard = document.createElement("div");
-    continerCard.className = "continerCard";
     continerCard.style.height = "150px";
     continerCard.style.transition = "all 0.3s ease";
+
+   
+    if (tipoEvento === "Reunião") {
+
+      continerCard.className = "continerCardImagem1";
+    
+
+    } else if (tipoEvento === "Comemoração") {
+     
+      continerCard.className = "continerCardImagem2";
+
+
+    } else if (tipoEvento === "Evento") {
+
+      continerCard.className = "continerCardImagem3";
+
+    } 
+    
 
     const botaoExcluirEvento = document.createElement("button");
     botaoExcluirEvento.className = "botaoExcluirEvento";
@@ -158,6 +187,25 @@ export default function FormularioCards() {
     const dataEvento = document.getElementById("data").value;
     const horarioEvento = document.getElementById("hora").value;
     const textoEvento = document.getElementById("comentario").value;
+
+    const { data: existingNome, error: existingError } = await supabase
+    .from("eventos")
+    .select("nome_evento")
+
+    if (existingError) {
+      console.error("Erro ao verificar se nome ja existe no banco", existingError);
+      return;
+    }
+
+    const nomesLista = existingNome.map((evento) => evento.nome_evento);
+    const existeNome = nomesLista.includes(nomeEvento);
+
+    if (existeNome) {
+
+      alert ("Nome do evento ja existe, por favor escolha outro nome");
+      return;
+
+    }
 
     const tiposDeEvento = {
       opcao1: "Reunião",
@@ -277,8 +325,10 @@ export default function FormularioCards() {
             value={value}
             onChange={handleInputChange}
             rows="4"
+             maxLength="200"
             style={{ resize: "none", overflow: "hidden" }}
           />
+          <p className="textoCaracteres">{value.length}/200 caracteres usados</p>
         </div>
 
         <div className="continerBotoesFormularios">
