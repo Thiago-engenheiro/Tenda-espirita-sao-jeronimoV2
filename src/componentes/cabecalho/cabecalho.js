@@ -1,6 +1,7 @@
 import MenuHamburguer from '../menuHamburguer/menuHamburguer'
 import './cabecalho.css'
 import MenuLink from '../linkAtivo/menuLink'
+import { Link } from 'react-router-dom'
 
 export default function Cabecalho () {
     
@@ -12,7 +13,9 @@ export default function Cabecalho () {
 
                 <div className='cabecalhoApresentacao'>
 
+                  
                     <img className='logotipoImg' src='/imagens/Exemplos/logo-placeholder-image.png' alt='Logotipo'></img>
+                  
 
                     <h1 className='LogotipoTitulo'>Tenda espirita <br></br> são Jeronimo</h1>
 
@@ -50,7 +53,9 @@ export default function Cabecalho () {
 
                     <section>
 
+                    <Link to= "/login">
                         <img className='UsuarioImg' src='/imagens/Icones/do-utilizador.png' alt='Logotipo'></img>
+                    </Link>
 
                     </section>
 

@@ -1,0 +1,369 @@
+.fundoComBlur {
+  position: relative;
+  width: 100vw;
+  height: 100%;
+  overflow: hidden; /* Garante que nada ultrapasse os limites */
+}
+
+.fundo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/public/imagens/Login/fundo.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: blur(10px); /* Aplica o blur somente no fundo */
+  z-index: 1; /* Fundo atrás */
+}
+
+.continerLogin {
+  position: relative;
+  z-index: 2; /* Conteúdo acima do fundo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: calc(100% - 40px);
+  padding: 20px;
+}
+
+.continerCardLogin {
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+  height: 100%;
+  width: 90%;
+  background: white;
+  background-image: url("/public/imagens/Login/fundo.png");
+  background-size: 100% 650px;
+  background-repeat: no-repeat;
+}
+
+.LoginInicio {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 80px);
+  padding: 40px;
+  flex-direction: column;
+}
+
+.logotipoImgLogin {
+  width: 100px;
+}
+
+.LoginVoltarAoInicio {
+  background: white;
+  color: black;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 16px;
+  font-weight: bold;
+  font-family: var(--fonte-06);
+}
+
+.LoginVoltarAoInicio:hover {
+  color: black;
+}
+
+.TituloCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  font-size: 60px;
+  width: 100%;
+  margin: 200px 0px 0px 0px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+  font-family: var(--fonte-03);
+  background: #9999;
+}
+
+.TituloCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
+  z-index: -5; /* Coloca o fundo atrás do texto */
+}
+
+.continerInputsLogin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 250px 0px 100px 0px;
+  gap: 50px;
+  position: relative;
+}
+
+.inputLogin {
+  background-image: linear-gradient(to top, #d8d9db 0%, #fff 80%, #fdfdfd 100%);
+  padding: 15px 25px;
+  width: 100px;
+  color: #606060;
+  box-shadow: 0 4px 3px 1px #fcfcfc, 0 6px 8px #d6d7d9, 0 -4px 4px #cecfd1,
+    0 -6px 4px #fefefe, inset 0 0 3px 3px #cecfd1;
+  border: 1px solid #8f9092;
+  text-shadow: 0 1px #fff;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.inputLogin:hover {
+  background-image: linear-gradient(
+    to top,
+    #f1f1f1 0%,
+    #fff 80%,
+    #fefefe 100%
+  ); /* Mudar o gradiente de fundo */
+  border-color: #3b8ec2; /* Mudar a cor da borda */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 0.2),
+    inset 0 0 5px rgba(0, 0, 0, 0.1); /* Aumentar e suavizar a sombra */
+  color: #333; /* Mudar a cor do texto */
+}
+
+.inputLogin:focus {
+  background-image: linear-gradient(
+    to top,
+    #f1f1f1 0%,
+    #fff 80%,
+    #fefefe 100%
+  ); /* Mudar o gradiente de fundo */
+  border-color: #3b8ec2; /* Mudar a cor da borda */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 0.2),
+    inset 0 0 5px rgba(0, 0, 0, 0.1); /* Aumentar e suavizar a sombra */
+  color: #333; /* Mudar a cor do texto */
+}
+
+.inputLogin:active {
+  background-image: linear-gradient(
+    to top,
+    #f1f1f1 0%,
+    #fff 80%,
+    #fefefe 100%
+  ); /* Mudar o gradiente de fundo */
+  border-color: #3b8ec2; /* Mudar a cor da borda */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 0.2),
+    inset 0 0 5px rgba(0, 0, 0, 0.1); /* Aumentar e suavizar a sombra */
+  color: #333; /* Mudar a cor do texto */
+}
+
+.EntraLogin {
+  padding: 15px 25px;
+  width: 150px;
+  border: none;
+  font-size: 12px;
+  color: #fff;
+  border-radius: 7px;
+  letter-spacing: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: 0.5s;
+  transition-property: box-shadow;
+}
+
+.EntraLogin {
+  background: rgb(0, 140, 255);
+  box-shadow: 0 0 25px rgb(0, 140, 255);
+}
+
+.EntraLogin:hover {
+  box-shadow: 0 0 5px rgb(0, 140, 255), 0 0 25px rgb(0, 140, 255),
+    0 0 50px rgb(0, 140, 255), 0 0 100px rgb(0, 140, 255);
+}
+
+.esqueceuASenha {
+  padding: 15px 5px;
+  border: none;
+  font-size: 12px;
+  color: #333;
+  border-radius: 7px;
+  letter-spacing: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: 0.5s;
+  transition-property: box-shadow;
+  margin: 50px 0px 0px 0px;
+  width: 125px;
+  text-align: center;
+}
+
+.esqueceuASenha {
+  background: rgb(255, 140, 0); /* Cor laranja suave */
+  box-shadow: 0 0 25px rgb(255, 140, 0); /* Sombra laranja suave */
+}
+
+.esqueceuASenha:hover {
+  box-shadow: 0 0 5px rgb(255, 140, 0), 0 0 25px rgb(255, 140, 0),
+    0 0 50px rgb(255, 140, 0), 0 0 100px rgb(255, 140, 0);
+}
+
+@media (min-width: 400px) {
+  .continerLogin {
+    position: relative;
+    z-index: 2; /* Conteúdo acima do fundo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: calc(100% - 80px);
+    padding: 40px;
+  }
+
+  .TituloCard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    font-size: 80px;
+    width: 100%;
+    margin: 200px 0px 0px 0px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+    font-family: var(--fonte-03);
+    background: #9999;
+  }
+
+  .EntraLogin {
+    padding: 15px 25px;
+    width: 200px;
+    border: none;
+    font-size: 17px;
+    color: #fff;
+    border-radius: 7px;
+    letter-spacing: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.5s;
+    transition-property: box-shadow;
+  }
+
+  .esqueceuASenha {
+    padding: 15px 25px;
+    border: none;
+    font-size: 12px;
+    color: #333;
+    border-radius: 7px;
+    letter-spacing: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.5s;
+    transition-property: box-shadow;
+    margin: 50px 0px 0px 0px;
+    width: 200px;
+  }
+
+  .inputLogin {
+    background-image: linear-gradient(
+      to top,
+      #d8d9db 0%,
+      #fff 80%,
+      #fdfdfd 100%
+    );
+    padding: 15px 25px;
+    width: 200px;
+    color: #606060;
+    box-shadow: 0 4px 3px 1px #fcfcfc, 0 6px 8px #d6d7d9, 0 -4px 4px #cecfd1,
+      0 -6px 4px #fefefe, inset 0 0 3px 3px #cecfd1;
+    border: 1px solid #8f9092;
+    text-shadow: 0 1px #fff;
+    font-size: 15px;
+    transition: all 0.3s ease;
+  }
+}
+
+@media (min-width: 600px) {
+  .LoginInicio {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 80px);
+    padding: 40px;
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 850px) {
+  .fundoComBlur {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* Garante que nada ultrapasse os limites */
+  }
+
+  .continerLogin {
+    position: relative;
+    z-index: 2; /* Conteúdo acima do fundo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: calc(100% - 80px);
+  }
+
+  .inputLogin {
+    background-image: linear-gradient(
+      to top,
+      #d8d9db 0%,
+      #fff 80%,
+      #fdfdfd 100%
+    );
+    padding: 15px 25px;
+    width: 250px;
+    color: #606060;
+    box-shadow: 0 4px 3px 1px #fcfcfc, 0 6px 8px #d6d7d9, 0 -4px 4px #cecfd1,
+      0 -6px 4px #fefefe, inset 0 0 3px 3px #cecfd1;
+    border: 1px solid #8f9092;
+    text-shadow: 0 1px #fff;
+    font-size: 18px;
+    transition: all 0.3s ease;
+  }
+
+  .EntraLogin {
+    background: rgb(0, 140, 255);
+    box-shadow: 0 0 25px rgb(0, 140, 255);
+    width: 250px;
+  }
+
+  .esqueceuASenha {
+    padding: 15px 25px;
+    border: none;
+    font-size: 12px;
+    color: #333;
+    border-radius: 7px;
+    letter-spacing: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.5s;
+    transition-property: box-shadow;
+    margin: 50px 0px 0px 0px;
+    width: 300px;
+  }
+
+  .continerLogin {
+    position: relative;
+    z-index: 2; /* Conteúdo acima do fundo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    padding: 0px;
+  }
+
+  .continerCardLogin {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    height: 1200px;
+    width: 800px;
+    background: white;
+    background-image: url("/public/imagens/Login/fundo.png");
+    background-size: 100% 650px;
+    background-repeat: no-repeat;
+  }
+}

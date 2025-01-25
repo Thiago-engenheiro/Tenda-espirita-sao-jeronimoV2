@@ -2,6 +2,7 @@ import TooltipDeitado from '../links/linksDeitado';
 import './menuHamburguer.css'
 import React, { useState } from 'react';
 import MenuLink from '../linkAtivo/menuLink'
+import { Link } from 'react-router-dom';
 
 export default function MenuHamburguer () {
 
@@ -26,7 +27,10 @@ export default function MenuHamburguer () {
                 
                     <div className='continerLogotipo'>
 
-                        <img className='UsuarioImg' src='/imagens/Icones/do-utilizador.png' alt='Logotipo'></img>
+                        <Link to= "/login">
+                            <img className='UsuarioImg' src='/imagens/Icones/do-utilizador.png' alt='Logotipo'></img>
+                        </Link>
+                        
 
                     </div> 
 
