@@ -17,10 +17,19 @@ export default function AgendaDeEventos() {
 
                 </h6>
 
-                <select>
+                <select className="selecao" id="filtroAno">
 
-                    <option></option>
+                    <option>
 
+                        Ver tudo
+
+                    </option>
+
+                    <option>
+
+                        Aqui recebe os anos da API
+
+                    </option>
 
                 </select>
 
@@ -34,9 +43,19 @@ export default function AgendaDeEventos() {
 
                 </h6>
 
-                <select>
+                <select className="selecao">
 
-                    <option></option>
+                <option>
+
+                    Ver tudo
+
+                </option>
+
+                <option>
+
+                    Aqui os dias da semana na Api
+
+                </option>
 
                 </select>
 
@@ -50,9 +69,19 @@ export default function AgendaDeEventos() {
 
                 </h6>
 
-                <select>
+                <select className="selecao">
 
-                    <option></option>
+                    <option>
+
+                        Ver tudo
+
+                    </option>
+
+                    <option>
+
+                        Aqui os tipo de evento na Api
+
+                    </option>
 
                 </select>
 
@@ -66,9 +95,19 @@ export default function AgendaDeEventos() {
 
                 </h6>
 
-                <select>
+                <select className="selecao">
 
-                    <option></option>
+                <option>
+
+                    Ver tudo
+
+                </option>
+
+                <option>
+
+                    Aqui recebe as atividades na API
+
+                </option>
 
                 </select>
 
@@ -82,9 +121,19 @@ export default function AgendaDeEventos() {
 
                 </h6>
 
-                <select>
+                <select className="selecao">
 
-                    <option></option>
+                <option>
+
+                    Ver tudo
+
+                </option>
+
+                <option>
+
+                    Aqui recebe os horarios na API
+
+                </option>
 
                 </select>
 
@@ -92,10 +141,10 @@ export default function AgendaDeEventos() {
 
         </div>
 
-        <div className="continerEventos">
+        <div className="continerEventos referencia">
 
-        <table className="tabelaEventos">
-            <thead>
+        <table className="tabelaEventos ">
+            <thead className="">
                 <tr className="cabecalhoTabela">
                     <th className="cabecalhoTabela__titulo">Data</th>
                     <th className="cabecalhoTabela__titulo">Dia da semana</th>
@@ -103,6 +152,13 @@ export default function AgendaDeEventos() {
                     <th className="cabecalhoTabela__titulo">Atividade</th>
                     <th className="cabecalhoTabela__titulo">Horario</th>
                 </tr>
+
+                <button className="botaoExcluirColuna">
+
+                    <img src="/imagens/Icones/Deletar.png" alt="#" width={30}></img>
+
+                </button>
+
             </thead>
             <tbody>
                 <tr>
@@ -112,6 +168,13 @@ export default function AgendaDeEventos() {
                     <td className="cabecalhoTabela__texto">Festa na rua</td>
                     <td className="cabecalhoTabela__texto">19:30</td>
                 </tr>
+
+                <button className="botaoExcluirColuna">
+
+                    <img src="/imagens/Icones/Deletar.png" alt="#" width={30}></img>
+
+                </button>
+
                 <tr>
                     <td className="cabecalhoTabela__texto">11/12</td>
                     <td className="cabecalhoTabela__texto">Segunda feira</td>
@@ -119,6 +182,12 @@ export default function AgendaDeEventos() {
                     <td className="cabecalhoTabela__texto">Festa na rua</td>
                     <td className="cabecalhoTabela__texto">19:30</td>
                 </tr>
+
+                <button className="botaoExcluirColuna">
+
+                    <img src="/imagens/Icones/Deletar.png" alt="#" width={30}></img>
+
+                </button>
                 <tr>
                     <td className="cabecalhoTabela__texto">11/12</td>
                     <td className="cabecalhoTabela__texto">Segunda feira</td>
@@ -126,6 +195,8 @@ export default function AgendaDeEventos() {
                     <td className="cabecalhoTabela__texto">Festa na rua</td>
                     <td className="cabecalhoTabela__texto">19:30</td>
                 </tr>
+
+                
                
             </tbody>
         </table>

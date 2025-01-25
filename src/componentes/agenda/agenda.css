@@ -8,6 +8,13 @@
   color: #fff842;
 }
 
+
+.referencia {
+
+  position: relative;
+ 
+}
+
 .cabecalhoTabela__titulo {
   font-size: 25px;
   text-align: center;
@@ -20,17 +27,41 @@
   color: #ffffff;
   text-align: center;
   padding: 30px 0px !important;
+  
+}
+
+.botaoExcluirColuna {
+
+  position: absolute;
+  right: 100px;
+  z-index: 5;
+  background-color: rgb(255, 95, 95);
+  height: 60px;
+  width: 60px;
+  border-radius: 12px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  display: none;
+
+}
+
+.botaoExcluirColuna:hover {
+
+  background-color: rgb(248, 67, 67);
+
 }
 
 .continerAgenda {
-  margin: 140px 0px 0px 0px;
+  margin: 100px 0px 0px 0px;
   padding: 20px 0px;
-  padding: 100px 50px;
+  padding: 100px 0px;
+  width: 100%;
 }
 
 .agendaTitulo {
   color: black;
-  font-size: 40px;
+  font-size: 15px;
   font-family: var(--fonte-04);
   text-align: center;
 }
@@ -38,13 +69,19 @@
 .continerEventos {
   display: flex;
   justify-content: center;
-  margin: 100px 0px;
+  margin: 100px 20px;
+  width: 100%;
+  overflow-y: auto; 
+  display: none;
+  overflow-x: auto; 
+
 }
 
 .continerfiltroEventos {
-  width: calc(80% - 80px);
+ 
   background: #333333;
   display: flex;
+  flex-direction: column;
   align-items: center;
   margin: 0 auto;
   padding: 40px 40px;
@@ -52,6 +89,25 @@
   border-radius: 24px;
   margin: 100px auto;
   gap: 10%;
+  font-size: 15px;
+  width: 60%;
+
+}
+
+.selecao {
+
+  background: transparent;
+  padding: 10px;
+  border: #ffffff 2px solid;
+  color: white;
+
+}
+
+.selecao option {
+
+  color: black; 
+  background-color: white;
+
 }
 
 .continerFiltro {
@@ -59,7 +115,8 @@
   flex-direction: column;
   gap: 20px;
   flex-grow: 1;
-  width: 15%;
+  width: 100%;
+  margin: 0px 0px 50px 0px;
 }
 
 .tabelaEventos td {
@@ -72,7 +129,6 @@
 
 .tabelaEventos {
   text-align: left;
-  overflow: hidden;
   width: 80%;
   margin: 0 auto;
   display: table;
@@ -132,3 +188,72 @@
     display: none;
   }
 }
+
+
+
+
+@media (min-width: 800px) {
+
+  .agendaTitulo {
+    
+    font-size: 40px;
+   
+  }
+
+  .continerAgenda {
+    margin: 140px 0px 0px 0px;
+    padding: 20px 0px;
+    padding: 100px 50px;
+  }
+
+  .continerfiltroEventos {
+    width: calc(80% - 80px);
+    background: #333333;
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    padding: 40px 40px;
+    text-align: center;
+    border-radius: 24px;
+    margin: 100px auto;
+    gap: 10%;
+    font-size: 20px;
+  }
+
+  .continerFiltro {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-grow: 1;
+    width: 15%;
+  }
+
+  .tabelaEventos {
+    text-align: left;
+    overflow: hidden;
+    width: 80%;
+    margin: 0 auto;
+    display: table;
+    padding: 0 0 8em 0;
+  }
+
+  .botaoExcluirColuna {
+
+    position: absolute;
+    right: 100px;
+    z-index: 5;
+    background-color: rgb(255, 95, 95);
+    height: 60px;
+    width: 60px;
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  
+  }
+  
+  
+
+
+}
+
