@@ -1,69 +1,135 @@
-import { Link } from 'react-router-dom'
-import './LoginPagina.css'
+import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import "./LoginPagina.css";
+import { createClient } from "@supabase/supabase-js";
 
-export function PaginaLogin () {
+const supabase = createClient(
+  process.env.REACT_APP_SUPABASE_URL,
+  process.env.REACT_APP_SUPABASE_ANON_KEY
+);
 
-    return (
+export function PaginaLogin() {
+  const [usuario, setUsuario] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
+  const navigate = useNavigate();
+ 
+  const validarLogin = async (evento) => {
+    evento.preventDefault();
+    
+    if (!usuario || !senha) {
+      setErro("Por favor, preencha todos os campos.");
+      return;
+    }
 
-        <>
+    const usuarioCorrigido = usuario.trim();
 
-            <section className='paginaLogin fundoComBlur'>
+    try {
+      const { data, error } = await supabase
+        .from("login")
+        .select("usuario, senha")
+        .ilike("usuario", usuarioCorrigido);
 
-                <div className="fundo"></div>
+      if (error) {
+        setErro("Erro ao buscar o usuário");
+        return;
+      }
 
-                <div className='continerLogin'>
+      console.log("Dados do usuário no banco:", data);
 
-                    <div className='continerCardLogin'>
+      if (data && data.length > 0) {
+        const usuarioNoBanco = data[0];
 
-                    <div className='LoginInicio'>
+        if (usuarioNoBanco.senha.includes(senha)) {
+          
+          localStorage.setItem("logado", "true");
+          navigate("/");
+        
+       
+        } else {
+          setErro("Usuário ou senha incorretos.");
+        }
+      } else {
+        setErro("Usuário não encontrado.");
+      }
+    } catch (error) {
+      console.error("Erro ao validar o login", error);
+      setErro("Erro interno ao tentar realizar o login.");
+    }
+  };
 
-                        <img className='logotipoImgLogin' src='/imagens/Exemplos/logo-placeholder-image.png' alt='Logotipo'></img>
+  return (
+    <>
+      <section className="paginaLogin fundoComBlur">
+        <div className="fundo"></div>
 
-                        <Link className='LoginVoltarAoInicio' to="/">Voltar ao Início</Link>
+        <div className="continerLogin">
+          <div className="continerCardLogin">
+            <div className="LoginInicio">
+              <img
+                className="logotipoImgLogin"
+                src="/imagens/Exemplos/logo-placeholder-image.png"
+                alt="Logotipo"
+              ></img>
 
-                    </div>
+              <Link className="LoginVoltarAoInicio" to="/">
+                Voltar ao Início
+              </Link>
+            </div>
 
-                    <h3 className='TituloCard'>LOGIN</h3>
+            <h3 className="TituloCard">LOGIN</h3>
 
-                    <div className='continerInputsLogin'>
+            <form onSubmit={validarLogin} className="continerInputsLogin">
+              <input
+                className="inputLogin"
+                type="text"
+                id="username"
+                placeholder="Digite seu usuário"
+                required
+                value={usuario}
+                onChange={(evento) => setUsuario(evento.target.value)}
+              />
 
-                        <input
+              <input
+                className="inputLogin"
+                type="password"
+                id="password"
+                placeholder="Digite sua senha"
+                required
+                value={senha}
+                onChange={(evento) => setSenha(evento.target.value)}
+              />
 
-                            className='inputLogin'
-                            type="text"
-                            id="username"
-                            placeholder="Digite seu usuário" 
-                            required
-                        />
-                        
-                        <input
-                        
-                            className='inputLogin'
-                            type="password"
-                            id="username"
-                            placeholder="Digite sua senha" 
-                            required
+              {erro && (
+                <p className="erroLogin">
+                  <svg
+                    stroke="currentColor"
+                    fill="none"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                    <path d="M12 9v4"></path>
+                    <path d="M12 17h.01"></path>
+                  </svg>
+                  {erro}
+                </p>
+              )}
 
-                        />
+              <button className="EntraLogin" type="submit">
+                {" "}
+                Entrar
+              </button>
 
-                        <button className='EntraLogin' type='submit'>Entrar</button>
-                        <button className='esqueceuASenha' >Esqueceu a senha ?</button>
-
-
-                        </div>
-
-
-                    </div>
-
-                    
-
-                </div>
-
-            </section>
-
-
-        </>
-
-    )
-
+              <button className="esqueceuASenha">Esqueceu a senha ?</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }

@@ -91,10 +91,15 @@ export default function FormularioCards() {
     }
 
     const botaoExcluirEvento = document.createElement("button");
-    botaoExcluirEvento.className = "botaoExcluirEvento";
+    botaoExcluirEvento.className = "botaoExcluirEvento ocultar";
     botaoExcluirEvento.innerHTML = `
       <img class="iconeMenor" src="/imagens/Icones/Deletar.png" alt="Ícone">
     `;
+
+    const logadoNoStorage = localStorage.getItem("logado");
+    if (logadoNoStorage === "true") {
+      botaoExcluirEvento.classList.remove("ocultar");
+    }
 
     const botaoEditarEvento = document.createElement("button");
     botaoEditarEvento.className = "botaoEditarEvento";
@@ -161,9 +166,7 @@ export default function FormularioCards() {
 
   function definirIconeHorario(horario) {
     const [hora] = horario.split(":").map(Number);
-    console.log("Hora sem formatar", hora);
     formatarHora(hora);
-    console.log("Hora apos formatar", hora);
     return hora < 18
       ? "/imagens/Icones/brilho-do-sol.png"
       : "/imagens/Icones/lua.png";
@@ -176,8 +179,6 @@ export default function FormularioCards() {
 
   async function enviarAoServidor(evento) {
     evento.preventDefault();
-
-    console.log("Função chamada");
 
     const nomeEvento = document.getElementById("tituloCard").value;
     let tipoEvento = document.getElementById("opcoesEvento").value;
@@ -258,9 +259,25 @@ export default function FormularioCards() {
     buscarCardsEventos();
   }, [buscarCardsEventos]);
 
+  useEffect(() => {
+    const logadoNoStorage = localStorage.getItem("logado");
+  
+    const verificarElementos = () => {
+      const elemento = document.getElementById("formularioDeEventos");
+    
+      if (logadoNoStorage === "true" && elemento) {
+        elemento.classList.remove("ocultar");
+  
+      }
+    };
+  
+    // Aguardar o DOM estar renderizado
+    setTimeout(verificarElementos, 0);
+  }, []);
+
   return (
     <>
-      <form className="continerFormularioCards" onSubmit={enviarAoServidor}>
+      <form id="formularioDeEventos" className="continerFormularioCards ocultar" onSubmit={enviarAoServidor}>
         <div className="ContinerFormularioTitulo">
           <h4 className="FormularioTitulo">Adicionar eventos</h4>
           <img

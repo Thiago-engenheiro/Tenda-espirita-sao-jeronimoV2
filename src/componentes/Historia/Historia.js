@@ -20,6 +20,7 @@ export default function HistoriaDaTenda() {
 
   const criarCard = useCallback((nome) => {
     const galeria = document.getElementById("galeria");
+    const logadoNoStorage = localStorage.getItem("logado");
 
     const card = document.createElement("div");
     card.className = "card cardFoto";
@@ -41,11 +42,15 @@ export default function HistoriaDaTenda() {
     card.appendChild(imagem);
 
     const botaoExcluir = document.createElement("button");
-    botaoExcluir.className = "GaleriaImagemExcluir";
+    botaoExcluir.className = "GaleriaImagemExcluir ocultar";
     botaoExcluir.innerHTML = `
       <img class="iconeMenor" src="/imagens/Icones/Deletar.png" alt="Ícone">
       Excluir imagem
     `;
+
+    if (logadoNoStorage === "true") {
+      botaoExcluir.classList.remove("ocultar");
+    }
 
     botaoExcluir.onclick = async  () => {
 
@@ -90,11 +95,15 @@ export default function HistoriaDaTenda() {
     card.appendChild(tituloImagem);
 
     const botaoEditar = document.createElement("button");
-    botaoEditar.className = "GaleriaImagemEditar";
+    botaoEditar.className = "GaleriaImagemEditar ocultar";
     botaoEditar.innerHTML = `
       <img class="iconeMenor" src="/imagens/Icones/Editar.png" alt="Ícone">
       Editar texto
     `;
+
+    if (logadoNoStorage === "true") {
+      botaoEditar.classList.remove("ocultar");
+    }
 
     card.appendChild(botaoEditar);
 
@@ -402,6 +411,22 @@ export default function HistoriaDaTenda() {
     botaoEnviarImagem.style.display = "none";
   }
 
+   useEffect(() => {
+      const logadoNoStorage = localStorage.getItem("logado");
+    
+      const verificarElementos = () => {
+        const elemento = document.getElementById("cardAdicionarFoto");
+      
+        if (logadoNoStorage === "true" && elemento) {
+          elemento.classList.remove("ocultar");
+    
+        }
+      };
+    
+      // Aguardar o DOM estar renderizado
+      setTimeout(verificarElementos, 0);
+    }, []);
+
   return (
     <>
       <section className="SobreAHistoriaDaTenda">
@@ -443,7 +468,7 @@ export default function HistoriaDaTenda() {
       <h3 className="TituloGaleria">Galeria</h3>
 
       <section className="galeria" id="galeria">
-        <div className="card cardAdicionarFoto">
+        <div className="card cardAdicionarFoto ocultar" id="cardAdicionarFoto">
           <div className="VerImagem" id="VerImagem"></div>
 
           <button

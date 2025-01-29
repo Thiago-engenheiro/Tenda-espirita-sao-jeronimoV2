@@ -1,9 +1,26 @@
 import MenuHamburguer from '../menuHamburguer/menuHamburguer'
 import './cabecalho.css'
 import MenuLink from '../linkAtivo/menuLink'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate  } from 'react-router-dom'
+import React, { useEffect, useState }  from "react";
 
 export default function Cabecalho () {
+
+    const [logado, setLogado] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const logadoNoStorage = localStorage.getItem("logado");
+        setLogado(logadoNoStorage === "true");
+    }, []);
+
+    const sairDaConta = () => {
+
+        localStorage.removeItem("logado");
+        setLogado(false);
+        navigate("/login");
+
+    }
     
     return (
 
@@ -52,10 +69,16 @@ export default function Cabecalho () {
                     </ul>
 
                     <section>
+   
+                        <Link to={logado ? "#" : "/login"} onClick={logado ? sairDaConta : null}>
 
-                    <Link to= "/login">
-                        <img className='UsuarioImg' src='/imagens/Icones/do-utilizador.png' alt='Logotipo'></img>
-                    </Link>
+                            <img
+                                className="UsuarioImg"
+                                src={logado ? "/imagens/Login/moça.png" : "/imagens/Icones/do-utilizador.png"}
+                                alt="Logotipo"
+                            />
+
+                        </Link>
 
                     </section>
 

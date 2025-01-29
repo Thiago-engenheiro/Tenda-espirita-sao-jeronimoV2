@@ -49,34 +49,19 @@ export default function AgendaDeEventos() {
 
   // UseEffect para chamar buscarEventos na montagem do componente
   useEffect(() => {
+    
     buscarEventos();
   }, [buscarEventos]);
 
   // Função para criar a tabela duplicada
   async function criarTabelaDuplicada(eventos) {
     try {
-      // Limpa a tabela de agenda para evitar duplicação
-      const { error: existingError } = await supabase
-        .from("agenda")
-        .select("*");
 
-      if (existingError) {
-        console.error(
-          "Erro ao buscar dados existentes na tabela agenda:",
-          existingError.message
-        );
-      }
-
-      // Se já houver dados, podemos limpar a tabela "agenda" antes de inserir
-      const { error: deleteError } = await supabase
-        .from("agenda")
-        .delete()
-        .eq("id", 1); // A condição pode ser qualquer coisa sempre verdadeira
-      if (deleteError) {
-        console.error("Erro ao limpar a tabela agenda:", deleteError.message);
+      if (!eventos || eventos.length === 0) {
+        console.log("Nenhum evento encontrado para duplicar.");
         return;
       }
-
+    
       // Agora insere os novos dados da tabela "eventos" na "agenda"
       for (let item of eventos) {
         const { data, error } = await supabase
@@ -103,17 +88,24 @@ export default function AgendaDeEventos() {
             .from("agenda")
             .insert(dadosAgenda);
 
-          if (dbError) {
-            console.error("Erro ao duplicar a tabela:", dbError.message);
-            alert("Erro ao duplicar a tabela.");
-            return;
-          }
+            if (dbError) {
+              console.error("Erro ao inserir evento na agenda:", dbError.message);
+              continue; // Pula para o próximo evento em caso de erro
+            }
+    
+            console.log("Evento inserido com sucesso:", item.nome_evento);
+          } else {
+            console.log("Evento já existe na agenda:", item.nome_evento);
+
+          
         }
       }
     } catch (error) {
       console.error("Erro ao criar a tabela duplicada:", error);
     }
   }
+
+  const logadoNoStorage = localStorage.getItem("logado");
 
   // Função para criar as colunas da agenda
   function criarColunasAgenda() {
@@ -133,7 +125,7 @@ export default function AgendaDeEventos() {
         <td>
           {/* Botão de Excluir */}
           <button
-            className="botaoExcluirColuna"
+             className={`botaoExcluirColuna ${logadoNoStorage === "true" ? "" : "ocultar"}`}
             onClick={() => excluirEvento(item.id)}
           >
             <img
@@ -142,6 +134,7 @@ export default function AgendaDeEventos() {
               alt="excluir"
             ></img>
           </button>
+
         </td>
       </tr>
     ));
